@@ -15,7 +15,7 @@ switch ($_GET['process']) {
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 if ($row = mysqli_fetch_assoc($result)) {
-                    if ((string)$row['password'] == (string) $_POST['password']) {
+                    if ((string)$row['password'] == (string)$_POST['password']) {
                         $_SESSION['username'] = $row['username'];
                         $_SESSION['status'] = $row['status'];
                         header('Location: dashboard.php');
@@ -32,6 +32,51 @@ switch ($_GET['process']) {
     case 'logout':
         session_destroy();
         header('Location: ../index.php');
+        break;
+
+    case 'insert-kendaraan':
+        $nomor_polisi = $_POST['nomor_polisi'];
+        $merk_type = $_POST['merk_type'];
+        $harga_sewa = $_POST['harga_sewa'];
+        $tahun_keluaran = $_POST['tahun_keluaran'];
+
+        include('koneksi.php');
+        $query = "INSERT INTO kendaraan VALUES('$nomor_polisi','$merk_type','$harga_sewa','$tahun_keluaran')";
+        if (mysqli_query($conn, $query)) {
+            header("Location:kendaraan.php?status=input-berhasil");
+        } else {
+            header("Location:kendaraan.php?status=input-gagal");
+        }
+        mysqli_close($conn);
+        break;
+    case 'update-kendaraan':
+        $old_nomor_polisi = $_POST['old_nomor_polisi'];
+        $nomor_polisi = $_POST['nomor_polisi'];
+        $merk_type = $_POST['merk_type'];
+        $harga_sewa = $_POST['harga_sewa'];
+        $tahun_keluaran = $_POST['tahun_keluaran'];
+
+        include('koneksi.php');
+        $query = "UPDATE kendaraan SET nomor_polisi='$nomor_polisi',merk_type='$merk_type',harga_sewa=$harga_sewa,tahun_keluaran=$tahun_keluaran WHERE nomor_polisi='$old_nomor_polisi'";
+        if (mysqli_query($conn, $query)) {
+            header("Location:kendaraan.php?status=update-berhasil");
+            // echo "BErhasil : $query";
+        } else {
+            header("Location:kendaraan.php?status=update-gagal");
+            // echo "$query";
+        }
+        mysqli_close($conn);
+        break;
+    case 'delete-kendaraan':
+        $nomor_polisi = $_GET['nomor_polisi'];
+        include('koneksi.php');
+        $query = "DELETE FROM kendaraan WHERE nomor_polisi='$nomor_polisi' ";
+        if (mysqli_query($conn, $query)) {
+            header("Location:kendaraan.php?status=delete-berhasil");
+        } else {
+            header("Location:kendaraan.php?status=delete-gagal");
+        }
+        mysqli_close($conn);
         break;
     default:
         # code...

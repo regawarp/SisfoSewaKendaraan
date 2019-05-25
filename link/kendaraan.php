@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (isset($_GET['status'])) {
+    $status = $_GET['status'];
+    echo "<script type='text/javascript'>alert('$status');</script>";
+}
 if (!isset($_SESSION['username'])) {
     header('Location:login.php');
 }
@@ -47,9 +51,9 @@ $result = mysqli_query($conn, $sql);
                                                     <tr>
                                                         <td>$row[nomor_polisi]</td>
                                                         <td>$row[merk_type]</td>
-                                                        <td>$row[harga_sewa]</td>
+                                                        <td>Rp. $row[harga_sewa]</td>
                                                         <td>$row[tahun_keluaran]</td>
-                                                        <td><a href='process.php?process=update-kendaraan&&nomor_polisi=$row[nomor_polisi]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-kendaraan&&nomor_polisi=$row[nomor_polisi]' class='btn btn-danger'>Delete</a></td>
+                                                        <td><a href='kendaraan_update.php?nomor_polisi=$row[nomor_polisi]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-kendaraan&&nomor_polisi=$row[nomor_polisi]' class='btn btn-danger'>Delete</a></td>
                                                     </tr>
                                                     ";
                                                 }
@@ -70,7 +74,25 @@ $result = mysqli_query($conn, $sql);
                                     <h4 class="title">Input Kendaraan</h4>
                                 </div>
                                 <div class="content">
-
+                                    <form method="post" action="process.php?process=insert-kendaraan">
+                                        <div class="form-group">
+                                            <label>Nomor Polisi</label>
+                                            <input type="text" name="nomor_polisi" class="form-control" placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Merk / Type</label>
+                                            <input type="text" name="merk_type" class="form-control" placeholder="Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Harga Sewa</label>
+                                            <input type="text" name="harga_sewa" class="form-control" placeholder="Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tahun Keluaran</label>
+                                            <input type="text" name="tahun_keluaran" class="form-control" placeholder="Password">
+                                        </div>
+                                        <input class="btn btn-primary" type="submit" value="Input Data">
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -87,23 +109,7 @@ $result = mysqli_query($conn, $sql);
 
 </body>
 
-<!--   Core JS Files   -->
-<script src="../assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
-<script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
-
-<!--  Charts Plugin -->
-<script src="../assets/js/chartist.min.js"></script>
-
-<!--  Notifications Plugin    -->
-<script src="../assets/js/bootstrap-notify.js"></script>
-
-<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-<script src="../assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
-
-
-<!-- https://code.jquery.com/jquery-3.3.1.js -->
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<?php include('js.php'); ?>
 
 <script>
     $(document).ready(function() {
