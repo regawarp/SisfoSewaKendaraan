@@ -17,11 +17,23 @@ if (isset($_SESSION['username'])) {
 </head>
 
 <body>
-    <form method="post" action="process.php?process=login">
-        <input type="text" name="username">
-        <input type="password" name="password">
-        <input type="submit" value="Login">
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <form method="post" action="process.php?process=login">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="text" name="password" class="form-control" placeholder="Password">
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Login">
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

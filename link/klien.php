@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
     header('Location:login.php');
 }
 $page = "klien";
@@ -21,10 +21,21 @@ $page = "klien";
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Data Klien</h4>
+                                    <p class="category">Semua Data Klien</p>
+                                </div>
+                                <div class="content">
+                                    Halloo
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
 
             <?php include('footer.php'); ?>
 
