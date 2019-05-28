@@ -78,6 +78,17 @@ switch ($_GET['process']) {
         }
         mysqli_close($conn);
         break;
+
+    case 'insert-transaksi':
+        # code...
+        break;
+    case 'update-transaksi':
+        # code...
+        break;
+    case 'delete-transaksi':
+        # code...
+        break;
+        
     default:
         # code...
         break;
