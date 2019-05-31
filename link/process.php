@@ -80,15 +80,43 @@ switch ($_GET['process']) {
         break;
 
     case 'insert-transaksi':
-        # code...
+        $no_surat_jalan = $_POST['no_surat_jalan'];
+        $nomor_polisi = $_POST['nomor_polisi'];
+        $driver = $_POST['driver'];
+        $no_golongan_sim = $_POST['no_golongan_sim'];
+        $penjemputan = $_POST['penjemputan'];
+        $tgl_dibuat_surat_jln = $_POST['tgl_dibuat_surat_jln'];
+        $tmpt_dibuat_surat_jln = $_POST['tmpt_dibuat_surat_jln'];
+        $penyewa = $_POST['penyewa'];
+        $telepon = $_POST['telepon'];
+        $tujuan = $_POST['tujuan'];
+        $tgl_keberangkatan = $_POST['tgl_keberangkatan'];
+        $tgl_kedatangan = $_POST['tgl_kedatangan'];
+        $keterangan = $_POST['keterangan'];
+
+        include('koneksi.php');
+        $query = "INSERT INTO transaksi VALUES('$no_surat_jalan','$nomor_polisi','$driver','$no_golongan_sim','$penjemputan','$tgl_dibuat_surat_jln','$tmpt_dibuat_surat_jln','$penyewa','$telepon','$tujuan','$tgl_keberangkatan','$tgl_kedatangan','$keterangan')";
+        if (mysqli_query($conn, $query)) {
+            header("Location:transaksi.php?status=input-berhasil");
+        } else {
+            header("Location:transaksi.php?status=input-gagal");
+        }
         break;
     case 'update-transaksi':
         # code...
         break;
     case 'delete-transaksi':
-        # code...
+        $no_surat_jalan = $_GET['no_surat_jalan'];
+        include('koneksi.php');
+        $query = "DELETE FROM transaksi WHERE no_surat_jalan='$no_surat_jalan' ";
+        if (mysqli_query($conn, $query)) {
+            header("Location:transaksi.php?status=delete-berhasil");
+        } else {
+            header("Location:transaksi.php?status=delete-gagal");
+        }
+        mysqli_close($conn);
         break;
-        
+
     default:
         # code...
         break;
