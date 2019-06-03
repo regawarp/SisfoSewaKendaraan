@@ -36,7 +36,7 @@ $result = mysqli_query($conn, $sql);
                                 </div>
                                 <div class="content">
                                     <div class="content table-responsive table-full-width">
-                                        <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100 %;">
+                                        <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%;">
                                             <thead>
                                                 <th>No Surat Jalan</th>
                                                 <th>Nomor Polisi</th>
@@ -73,13 +73,13 @@ $result = mysqli_query($conn, $sql);
                                                         <td>$row[tgl_keberangkatan]</td>
                                                         <td>$row[tgl_kedatangan]</td>
                                                         <td>$row[keterangan]</td>
-                                                        <td><a href='#'>Lihat Faktur</a></td>
+                                                        <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
                                                         <td><a href='transaksi_update.php?no_surat_jalan=$row[no_surat_jalan]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-transaksi&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
                                                     </tr>
                                                     ";
                                                     }
                                                 } else {
-                                                    echo "<tr><td colspan='6'>0 results</td></tr>";
+                                                    echo "<tr><td colspan='15'>0 results</td></tr>";
                                                 }
                                                 ?>
                                             </tbody>

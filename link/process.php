@@ -137,6 +137,51 @@ switch ($_GET['process']) {
         mysqli_close($conn);
         break;
 
+    case 'insert-faktur':
+        $no_faktur = $_POST['no_faktur'];
+        $no_surat_jalan = $_POST['no_surat_jalan'];
+        $tanggal_faktur = $_POST['tanggal_faktur'];
+        $deskripsi_sewa = $_POST['deskripsi_sewa'];
+        $rincian_service = $_POST['rincian_service'];
+        $total_biaya = $_POST['total_biaya'];
+
+        include('koneksi.php');
+        $query = "INSERT INTO faktur VALUES('$no_faktur','$no_surat_jalan','$tanggal_faktur','$deskripsi_sewa','$rincian_service','$total_biaya')";
+        if (mysqli_query($conn, $query)) {
+            header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=input-berhasil");
+        } else {
+            header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=input-gagal");
+        }
+        break;
+    case 'update-faktur':
+        $no_faktur = $_POST['no_faktur'];
+        $no_surat_jalan = $_POST['no_surat_jalan'];
+        $tanggal_faktur = $_POST['tanggal_faktur'];
+        $deskripsi_sewa = $_POST['deskripsi_sewa'];
+        $rincian_service = $_POST['rincian_service'];
+        $total_biaya = $_POST['total_biaya'];
+
+        include('koneksi.php');
+        $query = "UPDATE faktur SET no_faktur='$no_faktur',tanggal_faktur='$tanggal_faktur',deskripsi_sewa='$deskripsi_sewa',rincian_service='$rincian_service',total_biaya='$total_biaya' WHERE no_surat_jalan='$no_surat_jalan'";
+        if (mysqli_query($conn, $query)) {
+            header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=update-berhasil");
+        } else {
+            header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=update-gagal");
+        }
+        break;
+    case 'delete-faktur':
+        $no_surat_jalan = $_GET['no_surat_jalan'];
+        $no_faktur = $_GET['no_faktur'];
+        include('koneksi.php');
+        $query = "DELETE FROM faktur WHERE no_faktur='$no_faktur' ";
+        if (mysqli_query($conn, $query)) {
+            header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=delete-berhasil");
+        } else {
+            header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=delete-gagal");
+        }
+        mysqli_close($conn);
+        break;
+
     default:
         # code...
         break;

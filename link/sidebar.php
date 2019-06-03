@@ -35,6 +35,18 @@
                     <p>Transaksi</p>
                 </a>
             </li>
+            <li <?php if ($page=="faktur"){echo "class='active'";} ?>>
+                <a href="faktur.php">
+                    <i class="pe-7s-news-paper"></i>
+                    <p>Faktur</p>
+                </a>
+            </li>
+            <li <?php if ($page=="tanda-terima"){echo "class='active'";} ?>>
+                <a href="tanda-terima.php">
+                    <i class="pe-7s-news-paper"></i>
+                    <p>Tanda Terima</p>
+                </a>
+            </li>
             <li <?php if ($page=="laporan"){echo "class='active'";} ?>>
                 <a href="laporan.php">
                     <i class="pe-7s-science"></i>
