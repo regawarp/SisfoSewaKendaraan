@@ -181,7 +181,7 @@ $result = mysqli_query($conn, $sql);
                                         <div class="row col-md-12">
                                             <div class="form-group">
                                                 <label>No Surat Jalan</label>
-                                                <input type="text" name="no_surat_jalan" class="form-control" placeholder="No Surat Jalan">
+                                                <input type="text" name="no_surat_jalan" class="form-control" placeholder="No Surat Jalan" required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Nomor Polisi</label>
@@ -221,11 +221,11 @@ $result = mysqli_query($conn, $sql);
                                             </div>
                                             <div class="form-group">
                                                 <label>Tanggal Keberangkatan</label>
-                                                <input type="text" name="tgl_keberangkatan" class="form-control" placeholder="Tanggal Keberangkatan" readonly <?php echo "value='$tgl_keberangkatan'"; ?>>
+                                                <input type="date" name="tgl_keberangkatan" class="form-control" placeholder="Tanggal Keberangkatan" readonly <?php echo "value='$tgl_keberangkatan'"; ?>>
                                             </div>
                                             <div class="form-group">
                                                 <label>Tanggal Kedatangan</label>
-                                                <input type="text" name="tgl_kedatangan" class="form-control" placeholder="Tanggal Kedatangan" readonly <?php echo "value='$tgl_kedatangan'"; ?>>
+                                                <input type="date" name="tgl_kedatangan" class="form-control" placeholder="Tanggal Kedatangan" readonly <?php echo "value='$tgl_kedatangan'"; ?>>
                                             </div>
                                             <div class="form-group">
                                                 <label>Keterangan</label>

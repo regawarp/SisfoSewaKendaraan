@@ -103,7 +103,27 @@ switch ($_GET['process']) {
         }
         break;
     case 'update-transaksi':
-        # code...
+        $no_surat_jalan = $_POST['no_surat_jalan'];
+        $nomor_polisi = $_POST['nomor_polisi'];
+        $driver = $_POST['driver'];
+        $no_golongan_sim = $_POST['no_golongan_sim'];
+        $penjemputan = $_POST['penjemputan'];
+        $tgl_dibuat_surat_jln = $_POST['tgl_dibuat_surat_jln'];
+        $tmpt_dibuat_surat_jln = $_POST['tmpt_dibuat_surat_jln'];
+        $penyewa = $_POST['penyewa'];
+        $telepon = $_POST['telepon'];
+        $tujuan = $_POST['tujuan'];
+        $tgl_keberangkatan = $_POST['tgl_keberangkatan'];
+        $tgl_kedatangan = $_POST['tgl_kedatangan'];
+        $keterangan = $_POST['keterangan'];
+
+        include('koneksi.php');
+        $query = "UPDATE transaksi SET nomor_polisi='$nomor_polisi',driver='$driver',no_golongan_sim='$no_golongan_sim',penjemputan='$penjemputan',tgl_dibuat_surat_jln='$tgl_dibuat_surat_jln',tmpt_dibuat_surat_jln='$tmpt_dibuat_surat_jln',penyewa='$penyewa',telepon='$telepon',tujuan='$tujuan',tgl_keberangkatan='$tgl_keberangkatan',tgl_kedatangan='$tgl_kedatangan',keterangan='$keterangan' WHERE no_surat_jalan='$no_surat_jalan'";
+        if (mysqli_query($conn, $query)) {
+            header("Location:transaksi.php?status=update-berhasil");
+        } else {
+            header("Location:transaksi.php?status=update-gagal");
+        }
         break;
     case 'delete-transaksi':
         $no_surat_jalan = $_GET['no_surat_jalan'];
