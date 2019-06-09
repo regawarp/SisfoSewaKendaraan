@@ -31,14 +31,16 @@ $result = mysqli_query($conn, $sql);
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title">Data Transaksi</h4>
-                                    <p class="category">Semua Data Transaksi</p>
+                                    <h4 class="title">Data Surat Jalan</h4>
+                                    <p class="category">Semua Data Surat Jalan</p>
                                 </div>
                                 <div class="content">
                                     <div class="content table-responsive table-full-width">
                                         <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%;">
                                             <thead>
                                                 <th>No Surat Jalan</th>
+                                                <th>Faktur</th>
+                                                <th>Tanda Terima</th>
                                                 <th>Nomor Polisi</th>
                                                 <th>Driver</th>
                                                 <th>No. Golongan SIM</th>
@@ -51,8 +53,6 @@ $result = mysqli_query($conn, $sql);
                                                 <th>Tanggal Keberangkatan</th>
                                                 <th>Tanggal Kedatangan</th>
                                                 <th>Keterangan</th>
-                                                <th>Faktur</th>
-                                                <th>Tanda Terima</th>
                                                 <th>Option</th>
                                             </thead>
                                             <tbody>
@@ -62,6 +62,8 @@ $result = mysqli_query($conn, $sql);
                                                         echo "
                                                     <tr>
                                                         <td>$row[no_surat_jalan]</td>
+                                                        <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
+                                                        <td><a href='tanda-terima.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Tanda Terima</a></td>
                                                         <td>$row[nomor_polisi]</td>
                                                         <td>$row[driver]</td>
                                                         <td>$row[no_golongan_sim]</td>
@@ -74,8 +76,6 @@ $result = mysqli_query($conn, $sql);
                                                         <td>$row[tgl_keberangkatan]</td>
                                                         <td>$row[tgl_kedatangan]</td>
                                                         <td>$row[keterangan]</td>
-                                                        <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
-                                                        <td><a href='tanda-terima.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Tanda Terima</a></td>
                                                         <td><a href='transaksi_update.php?no_surat_jalan=$row[no_surat_jalan]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-transaksi&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
                                                     </tr>
                                                     ";
@@ -143,7 +143,7 @@ $result = mysqli_query($conn, $sql);
                                                                 <td> $row[merk_type]</td>
                                                                 <td>Rp.  $row[harga_sewa]</td>
                                                                 <td> $row[tahun_keluaran]</td>
-                                                                <td><a href='transaksi.php?nomor_polisi=$row[nomor_polisi]&&tgl_keberangkatan=$tgl_keberangkatan&&tgl_kedatangan=$tgl_kedatangan#input-transaksi' class='btn btn-success'>Buat Transaksi</a></td>
+                                                                <td><a href='transaksi.php?nomor_polisi=$row[nomor_polisi]&&tgl_keberangkatan=$tgl_keberangkatan&&tgl_kedatangan=$tgl_kedatangan#input-transaksi' class='btn btn-success'>Buat Surat Jalan</a></td>
                                                             </tr>
                                                              ";
                                                         }

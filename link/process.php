@@ -208,6 +208,10 @@ switch ($_GET['process']) {
 
         $query = "INSERT INTO tanda_terima VALUES('$no_tanda_terima','$no_surat_jalan','$tanggal','$terbilang','$uang_sejumlah','$untuk_pembayaran','$sisa_pembayaran','$rincian_biaya')";
         if (mysqli_query($conn, $query)) {
+            if ($sisa_pembayaran <= 0) {
+                $query = "UPDATE transaksi SET keterangan='Lunas' WHERE no_surat_jalan='$no_surat_jalan'";
+                mysqli_query($conn, $query);
+            }
             header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-berhasil");
         } else {
             header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-gagal");

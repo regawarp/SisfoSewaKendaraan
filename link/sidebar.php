@@ -32,7 +32,7 @@
             <li <?php if ($page=="transaksi"){echo "class='active'";} ?>>
                 <a href="transaksi.php">
                     <i class="pe-7s-news-paper"></i>
-                    <p>Transaksi</p>
+                    <p>Surat Jalan</p>
                 </a>
             </li>
             <li <?php if ($page=="faktur"){echo "class='active'";} ?>>

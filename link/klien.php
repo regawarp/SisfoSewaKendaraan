@@ -4,6 +4,9 @@ if (!isset($_SESSION['username'])) {
     header('Location:login.php');
 }
 $page = "klien";
+include('koneksi.php');
+$sql = "SELECT * FROM transaksi";
+$result = mysqli_query($conn, $sql);
 ?>
 <!doctype html>
 <html lang="en">
@@ -28,7 +31,58 @@ $page = "klien";
                                     <p class="category">Semua Data Klien</p>
                                 </div>
                                 <div class="content">
-                                    Halloo
+                                    <div class="content table-responsive table-full-width">
+                                        <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%;">
+                                            <thead>
+                                                <th>Penyewa</th>
+                                                <th>Keterangan</th>
+                                                <th>Telepon</th>
+                                                <th>No Surat Jalan</th>
+                                                <th>Nomor Polisi</th>
+                                                <th>Driver</th>
+                                                <th>No. Golongan SIM</th>
+                                                <th>Penjemputan</th>
+                                                <th>Tanggal dibuat Surat Jalan</th>
+                                                <th>Tempat dibuat Surat Jalan</th>
+                                                <th>Tujuan</th>
+                                                <th>Tanggal Keberangkatan</th>
+                                                <th>Tanggal Kedatangan</th>
+                                                <th>Faktur</th>
+                                                <th>Tanda Terima</th>
+                                                <th>Option</th>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if (mysqli_num_rows($result) > 0) {
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        echo "
+                                                            <tr>
+                                                                <td>$row[penyewa]</td>
+                                                                <td>$row[keterangan]</td>
+                                                                <td>$row[telepon]</td>
+                                                                <td>$row[no_surat_jalan]</td>
+                                                                <td>$row[nomor_polisi]</td>
+                                                                <td>$row[driver]</td>
+                                                                <td>$row[no_golongan_sim]</td>
+                                                                <td>$row[penjemputan]</td>
+                                                                <td>$row[tgl_dibuat_surat_jln]</td>
+                                                                <td>$row[tmpt_dibuat_surat_jln]</td>
+                                                                <td>$row[tujuan]</td>
+                                                                <td>$row[tgl_keberangkatan]</td>
+                                                                <td>$row[tgl_kedatangan]</td>
+                                                                <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
+                                                                <td><a href='tanda-terima.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Tanda Terima</a></td>
+                                                                <td><a href='transaksi_update.php?no_surat_jalan=$row[no_surat_jalan]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-transaksi&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
+                                                            </tr>
+                                                            ";
+                                                    }
+                                                } else {
+                                                    echo "<tr><td colspan='15'>0 results</td></tr>";
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -46,24 +100,14 @@ $page = "klien";
 
 </body>
 
-<!--   Core JS Files   -->
-<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<?php include('js.php'); ?>
 
-<!--  Charts Plugin -->
-<script src="assets/js/chartist.min.js"></script>
-
-<!--  Notifications Plugin    -->
-<script src="assets/js/bootstrap-notify.js"></script>
-
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-
-<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
-
-<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-<script src="assets/js/demo.js"></script>
-
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            "scrollX": true
+        });
+    });
+</script>
 
 </html>
