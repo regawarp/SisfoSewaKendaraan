@@ -9,7 +9,7 @@ if (!isset($_SESSION['username'])) {
 }
 $page = "faktur";
 include('koneksi.php');
-$sql = "SELECT * FROM faktur WHERE no_faktur='$_GET[no_faktur]'";
+$sql = "SELECT * FROM tanda_terima WHERE no_tanda_terima='$_GET[no_tanda_terima]'";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result)
 ?>
@@ -32,38 +32,38 @@ $row = mysqli_fetch_assoc($result)
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title" id="input-transaksi">Update Faktur</h4>
+                                    <h4 class="title" id="input-transaksi">Update Tanda Terima</h4>
                                 </div>
                                 <div class="content">
-                                    <form method="post" action="process.php?process=update-faktur">
+                                    <form method="post" action="process.php?process=update-tanda-terima">
                                         <div class="row col-md-12">
                                             <div class="form-group">
                                                 <label>No Surat Jalan</label>
                                                 <input type="text" name="no_surat_jalan" class="form-control" placeholder="No Surat Jalan" required readonly <?php echo "value='$row[no_surat_jalan]'"; ?>>
                                             </div>
-                                            <input type="hidden" name="no_faktur_old" class="form-control" placeholder="No Faktur" required <?php echo "value='$row[no_faktur]'"; ?>>
+                                            <input type="hidden" name="no_tanda_terima_old" class="form-control" placeholder="No Faktur" required <?php echo "value='$row[no_tanda_terima]'"; ?>>
                                             <div class="form-group">
-                                                <label>No Faktur</label>
-                                                <input type="text" name="no_faktur" class="form-control" placeholder="No Faktur" required <?php echo "value='$row[no_faktur]'"; ?>>
+                                                <label>No Tanda Terima</label>
+                                                <input type="text" name="no_tanda_terima" class="form-control" placeholder="No Tanda Terima" required <?php echo "value='$row[no_tanda_terima]'"; ?>>
                                             </div>
                                             <div class="form-group">
-                                                <label>Tanggal Faktur</label>
-                                                <input type="date" name="tanggal_faktur" class="form-control" placeholder="Tanggal Faktur" required <?php echo "value='" . date('Y-m-d', strtotime($row['tanggal_faktur'])) . "'"; ?>>
+                                                <label>Tanggal</label>
+                                                <input type="date" name="tanggal" class="form-control" placeholder="Tanggal" required <?php echo "value='" . date('Y-m-d', strtotime($row['tanggal'])) . "'"; ?>>
                                             </div>
                                             <div class="form-group">
-                                                <label>Deskripsi Sewa</label>
-                                                <input type="text" name="deskripsi_sewa" class="form-control" placeholder="Deskripsi Sewa" required <?php echo "value='$row[deskripsi_sewa]'"; ?>>
+                                                <label>Uang sejumlah</label>
+                                                <input type="text" id="uang_sejumlah" name="uang_sejumlah" class="form-control" placeholder="Uang sejumlah" required <?php echo "value='$row[uang_sejumlah]'"; ?>>
                                             </div>
                                             <div class="form-group">
-                                                <label>Rincian Service</label>
-                                                <input type="text" name="rincian_service" class="form-control" placeholder="Rincian Service" required <?php echo "value='$row[rincian_service]'"; ?>>
+                                                <label>Untuk pembayaran</label>
+                                                <input type="text" name="untuk_pembayaran" class="form-control" placeholder="Untuk pembayaran" required <?php echo "value='$row[untuk_pembayaran]'"; ?>>
                                             </div>
                                             <div class="form-group">
-                                                <label>Total Biaya</label>
-                                                <input type="text" name="total_biaya" class="form-control" placeholder="Total Biaya" required <?php echo "value='$row[total_biaya]'"; ?>>
+                                                <label>Rincian biaya</label>
+                                                <input type="text" name="rincian_biaya" class="form-control" placeholder="Rincian biaya" required <?php echo "value='$row[rincian_biaya]'"; ?>>
                                             </div>
                                         </div>
-                                        <input class="btn btn-primary" type="submit" value="Update Faktur">
+                                        <input class="btn btn-primary" type="submit" value="Update Tanda Terima">
                                     </form>
                                 </div>
                             </div>

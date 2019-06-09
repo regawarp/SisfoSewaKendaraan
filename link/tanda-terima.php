@@ -7,12 +7,12 @@ if (isset($_GET['status'])) {
 if (!isset($_SESSION['username'])) {
     header('Location:login.php');
 }
-$page = "faktur";
+$page = "tanda-terima";
 include('koneksi.php');
 if (isset($_GET['no_surat_jalan'])) {
-    $sql = "SELECT * FROM faktur WHERE no_surat_jalan='$_GET[no_surat_jalan]'";
+    $sql = "SELECT * FROM tanda_terima WHERE no_surat_jalan='$_GET[no_surat_jalan]'";
 } else {
-    $sql = "SELECT * FROM faktur";
+    $sql = "SELECT * FROM tanda_terima";
 }
 $result = mysqli_query($conn, $sql);
 ?>
@@ -35,12 +35,12 @@ $result = mysqli_query($conn, $sql);
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title">Data Faktur</h4>
+                                    <h4 class="title">Data Tanda Terima</h4>
                                     <?php
                                     if (isset($_GET['no_surat_jalan'])) {
                                         echo " <p class='category'>No Surat Jalan : $_GET[no_surat_jalan]</p>";
                                     } else {
-                                        echo " <p class='category'>Semua Faktur</p>";
+                                        echo " <p class='category'>Semua Tanda Terima</p>";
                                     }
                                     ?>
                                 </div>
@@ -49,11 +49,13 @@ $result = mysqli_query($conn, $sql);
                                         <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%;">
                                             <thead>
                                                 <th>No Surat Jalan</th>
-                                                <th>No Faktur</th>
-                                                <th>Tanggal Faktur</th>
-                                                <th>Deskripsi Sewa</th>
-                                                <th>Rincian Service</th>
-                                                <th>Total Biaya</th>
+                                                <th>No Tanda Terima</th>
+                                                <th>Tanggal</th>
+                                                <th>Terbilang</th>
+                                                <th>Uang Sejumlah</th>
+                                                <th>Untuk Pembayaran</th>
+                                                <th>Sisa Pembayaran</th>
+                                                <th>Rincian Biaya</th>
                                                 <th>Option</th>
                                             </thead>
                                             <tbody>
@@ -63,12 +65,14 @@ $result = mysqli_query($conn, $sql);
                                                         echo "
                                                     <tr>
                                                         <td>$row[no_surat_jalan]</td>
-                                                        <td>$row[no_faktur]</td>
-                                                        <td>$row[tanggal_faktur]</td>
-                                                        <td>$row[deskripsi_sewa]</td>
-                                                        <td>$row[rincian_service]</td>
-                                                        <td>$row[total_biaya]</td>
-                                                        <td><a href='faktur_update.php?no_faktur=$row[no_faktur]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-faktur&&no_faktur=$row[no_faktur]&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
+                                                        <td>$row[no_tanda_terima]</td>
+                                                        <td>$row[tanggal]</td>
+                                                        <td>$row[terbilang]</td>
+                                                        <td>$row[uang_sejumlah]</td>
+                                                        <td>$row[untuk_pembayaran]</td>
+                                                        <td>$row[sisa_pembayaran]</td>
+                                                        <td>$row[rincian_biaya]</td>
+                                                        <td><a href='tanda-terima_update.php?no_tanda_terima=$row[no_tanda_terima]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-tanda-terima&&no_tanda_terima=$row[no_tanda_terima]&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
                                                     </tr>
                                                     ";
                                                     }
@@ -88,10 +92,10 @@ $result = mysqli_query($conn, $sql);
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title" id="input-transaksi">Buat Faktur</h4>
+                                    <h4 class="title" id="input-transaksi">Buat Tanda Terima</h4>
                                 </div>
                                 <div class="content">
-                                    <form method="post" action="process.php?process=insert-faktur">
+                                    <form method="post" action="process.php?process=insert-tanda-terima">
                                         <div class="row col-md-12">
                                             <?php if (!isset($_GET['no_surat_jalan'])) { ?>
                                                 <div class="form-group">
@@ -118,27 +122,47 @@ $result = mysqli_query($conn, $sql);
                                                 </div>
                                             <?php } ?>
                                             <div class="form-group">
-                                                <label>No Faktur</label>
-                                                <input type="text" name="no_faktur" class="form-control" placeholder="No Faktur" required>
+                                                <label>No Tanda Terima</label>
+                                                <input type="text" name="no_tanda_terima" class="form-control" placeholder="No Tanda Terima" required>
                                             </div>
                                             <div class="form-group">
-                                                <label>Tanggal Faktur</label>
-                                                <input type="date" name="tanggal_faktur" class="form-control" placeholder="Tanggal Faktur" required>
+                                                <label>Tanggal</label>
+                                                <input type="date" name="tanggal" class="form-control" placeholder="Tanggal" required>
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label>Nomor Polisi</label>
+                                                <input type="text" name="Nomor Polisi" class="form-control" placeholder="Nomor Polisi" >
                                             </div>
                                             <div class="form-group">
-                                                <label>Deskripsi Sewa</label>
-                                                <input type="text" name="deskripsi_sewa" class="form-control" placeholder="Deskripsi Sewa" required>
+                                                <label>Merek/type</label>
+                                                <input type="text" name="Merek/type" class="form-control" placeholder="Merek/type" >
                                             </div>
                                             <div class="form-group">
-                                                <label>Rincian Service</label>
-                                                <input type="text" name="rincian_service" class="form-control" placeholder="Rincian Service" required>
-                                            </div>
+                                                <label>Telah diterima dari (penyewa)</label>
+                                                <input type="text" name="penyewa" class="form-control" placeholder="Telah diterima dari (penyewa)" >
+                                            </div> -->
                                             <div class="form-group">
-                                                <label>Total Biaya</label>
-                                                <input type="text" name="total_biaya" class="form-control" placeholder="Total Biaya" required>
+                                                <label>Uang sejumlah</label>
+                                                <input type="text" id="uang_sejumlah" name="uang_sejumlah" class="form-control" placeholder="Uang sejumlah" required>
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label>Terbilang</label>
+                                                <input type="text" name="terbilang" class="form-control" placeholder="Terbilang" required>
+                                            </div> -->
+                                            <div class="form-group">
+                                                <label>Untuk pembayaran</label>
+                                                <input type="text" name="untuk_pembayaran" class="form-control" placeholder="Untuk pembayaran" required>
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label>Sisa Pembayaran</label>
+                                                <input type="text" name="sisa_pembayaran" class="form-control" placeholder="Sisa Pembayaran" required>
+                                            </div> -->
+                                            <div class="form-group">
+                                                <label>Rincian biaya</label>
+                                                <input type="text" name="rincian_biaya" class="form-control" placeholder="Rincian biaya" required>
                                             </div>
                                         </div>
-                                        <input class="btn btn-primary" type="submit" value="Input Faktur">
+                                        <input class="btn btn-primary" type="submit" value="Buat Tanda Terima">
                                     </form>
                                 </div>
                             </div>

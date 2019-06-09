@@ -155,6 +155,7 @@ switch ($_GET['process']) {
         break;
     case 'update-faktur':
         $no_faktur = $_POST['no_faktur'];
+        $no_faktur_old = $_POST['no_faktur_old'];
         $no_surat_jalan = $_POST['no_surat_jalan'];
         $tanggal_faktur = $_POST['tanggal_faktur'];
         $deskripsi_sewa = $_POST['deskripsi_sewa'];
@@ -162,7 +163,7 @@ switch ($_GET['process']) {
         $total_biaya = $_POST['total_biaya'];
 
         include('koneksi.php');
-        $query = "UPDATE faktur SET no_faktur='$no_faktur',tanggal_faktur='$tanggal_faktur',deskripsi_sewa='$deskripsi_sewa',rincian_service='$rincian_service',total_biaya='$total_biaya' WHERE no_surat_jalan='$no_surat_jalan'";
+        $query = "UPDATE faktur SET no_faktur='$no_faktur',tanggal_faktur='$tanggal_faktur',deskripsi_sewa='$deskripsi_sewa',rincian_service='$rincian_service',total_biaya='$total_biaya' WHERE no_surat_jalan='$no_surat_jalan' AND no_faktur='$no_faktur_old'";
         if (mysqli_query($conn, $query)) {
             header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=update-berhasil");
         } else {
@@ -182,7 +183,118 @@ switch ($_GET['process']) {
         mysqli_close($conn);
         break;
 
+    case 'insert-tanda-terima':
+        $no_tanda_terima = $_POST['no_tanda_terima'];
+        $no_surat_jalan = $_POST['no_surat_jalan'];
+        $tanggal = $_POST['tanggal'];
+        $uang_sejumlah = $_POST['uang_sejumlah'];
+        $terbilang = terbilang($uang_sejumlah);
+        $untuk_pembayaran = $_POST['untuk_pembayaran'];
+        $sisa_pembayaran;
+        $rincian_biaya = $_POST['rincian_biaya'];
+        $total_biaya;
+
+
+        include('koneksi.php');
+        $queryTotal = "SELECT sisa_pembayaran as 'total_biaya' FROM tanda_terima WHERE no_surat_jalan='$no_surat_jalan' ORDER BY sisa_pembayaran ASC LIMIT 1";
+        $result = mysqli_query($conn, $queryTotal);
+        if (mysqli_num_rows($result) < 0) {
+            $queryTotal = "SELECT SUM(total_biaya) as 'total_biaya' FROM faktur WHERE no_surat_jalan='$no_surat_jalan'";
+            $result = mysqli_query($conn, $queryTotal);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_biaya = $row['total_biaya'];
+        $sisa_pembayaran = $total_biaya - $uang_sejumlah;
+
+        $query = "INSERT INTO tanda_terima VALUES('$no_tanda_terima','$no_surat_jalan','$tanggal','$terbilang','$uang_sejumlah','$untuk_pembayaran','$sisa_pembayaran','$rincian_biaya')";
+        if (mysqli_query($conn, $query)) {
+            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-berhasil");
+        } else {
+            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-gagal");
+        }
+        break;
+    case 'update-tanda-terima':
+        $no_tanda_terima = $_POST['no_tanda_terima'];
+        $no_tanda_terima_old = $_POST['no_tanda_terima_old'];
+        $no_surat_jalan = $_POST['no_surat_jalan'];
+        $tanggal = $_POST['tanggal'];
+        $uang_sejumlah = $_POST['uang_sejumlah'];
+        $terbilang = terbilang($uang_sejumlah);
+        $untuk_pembayaran = $_POST['untuk_pembayaran'];
+        $sisa_pembayaran;
+        $rincian_biaya = $_POST['rincian_biaya'];
+        $total_biaya;
+
+        include('koneksi.php');
+        $queryTotal = "SELECT sisa_pembayaran as 'total_biaya' FROM tanda_terima WHERE no_surat_jalan='$no_surat_jalan' ORDER BY sisa_pembayaran ASC LIMIT 1";
+        $result = mysqli_query($conn, $queryTotal);
+        if (mysqli_num_rows($result) < 0) {
+            $queryTotal = "SELECT SUM(total_biaya) as 'total_biaya' FROM faktur WHERE no_surat_jalan='$no_surat_jalan'";
+            $result = mysqli_query($conn, $queryTotal);
+        }
+        $row = mysqli_fetch_assoc($result);
+        $total_biaya = $row['total_biaya'];
+        $sisa_pembayaran = $total_biaya - $uang_sejumlah;
+
+        $query = "UPDATE tanda_terima SET no_tanda_terima='$no_tanda_terima',no_surat_jalan='$no_surat_jalan',tanggal='$tanggal',terbilang='$terbilang',uang_sejumlah='$uang_sejumlah',untuk_pembayaran='$untuk_pembayaran',sisa_pembayaran='$sisa_pembayaran',rincian_biaya='$rincian_biaya' WHERE no_surat_jalan='$no_surat_jalan' AND no_tanda_terima='$no_tanda_terima_old'";
+        if (mysqli_query($conn, $query)) {
+            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=update-berhasil");
+        } else {
+            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=update-gagal");
+        }
+        break;
+    case 'delete-tanda-terima':
+        $no_surat_jalan = $_GET['no_surat_jalan'];
+        $no_tanda_terima = $_GET['no_tanda_terima'];
+        include('koneksi.php');
+        $query = "DELETE FROM tanda_terima WHERE no_tanda_terima='$no_tanda_terima' ";
+        if (mysqli_query($conn, $query)) {
+            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=delete-berhasil");
+        } else {
+            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=delete-gagal");
+        }
+        mysqli_close($conn);
+        break;
+
     default:
         # code...
         break;
+}
+function penyebut($nilai)
+{
+    $nilai = abs($nilai);
+    $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+    $temp = "";
+    if ($nilai < 12) {
+        $temp = " " . $huruf[$nilai];
+    } else if ($nilai < 20) {
+        $temp = penyebut($nilai - 10) . " belas";
+    } else if ($nilai < 100) {
+        $temp = penyebut($nilai / 10) . " puluh" . penyebut($nilai % 10);
+    } else if ($nilai < 200) {
+        $temp = " seratus" . penyebut($nilai - 100);
+    } else if ($nilai < 1000) {
+        $temp = penyebut($nilai / 100) . " ratus" . penyebut($nilai % 100);
+    } else if ($nilai < 2000) {
+        $temp = " seribu" . penyebut($nilai - 1000);
+    } else if ($nilai < 1000000) {
+        $temp = penyebut($nilai / 1000) . " ribu" . penyebut($nilai % 1000);
+    } else if ($nilai < 1000000000) {
+        $temp = penyebut($nilai / 1000000) . " juta" . penyebut($nilai % 1000000);
+    } else if ($nilai < 1000000000000) {
+        $temp = penyebut($nilai / 1000000000) . " milyar" . penyebut(fmod($nilai, 1000000000));
+    } else if ($nilai < 1000000000000000) {
+        $temp = penyebut($nilai / 1000000000000) . " trilyun" . penyebut(fmod($nilai, 1000000000000));
+    }
+    return $temp;
+}
+
+function terbilang($nilai)
+{
+    if ($nilai < 0) {
+        $hasil = "minus " . trim(penyebut($nilai));
+    } else {
+        $hasil = trim(penyebut($nilai));
+    }
+    return $hasil;
 }

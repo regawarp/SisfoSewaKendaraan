@@ -52,6 +52,7 @@ $result = mysqli_query($conn, $sql);
                                                 <th>Tanggal Kedatangan</th>
                                                 <th>Keterangan</th>
                                                 <th>Faktur</th>
+                                                <th>Tanda Terima</th>
                                                 <th>Option</th>
                                             </thead>
                                             <tbody>
@@ -74,6 +75,7 @@ $result = mysqli_query($conn, $sql);
                                                         <td>$row[tgl_kedatangan]</td>
                                                         <td>$row[keterangan]</td>
                                                         <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
+                                                        <td><a href='tanda-terima.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Tanda Terima</a></td>
                                                         <td><a href='transaksi_update.php?no_surat_jalan=$row[no_surat_jalan]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-transaksi&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
                                                     </tr>
                                                     ";
@@ -164,7 +166,7 @@ $result = mysqli_query($conn, $sql);
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title" id="input-transaksi">Input Transaksi</h4>
+                                    <h4 class="title" id="input-transaksi">Buat Surat Jalan</h4>
                                 </div>
                                 <div class="content">
                                     <?php
