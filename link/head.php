@@ -8,13 +8,11 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-
-
     <!-- Bootstrap core CSS     -->
-    <!-- <link href="../assets/css/bootstrap.min.css" rel="stylesheet" /> -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
+    <link href="../assets/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> -->
 
     <!-- Animation library for notifications   -->
     <link href="../assets/css/animate.min.css" rel="stylesheet" />
