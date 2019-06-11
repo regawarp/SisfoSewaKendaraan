@@ -4,18 +4,18 @@ if (!isset($_SESSION['username'])) {
     //Already loged in
     header("Location: ../index.php");
 } else { }
-
-switch ($_GET['process']) {
+include('koneksi.php');
+switch (mysqli_real_escape_string($conn, $_GET['process'])) {
     case 'login':
-        include('koneksi.php');
+
         if (isset($_POST['username']) && isset($_POST['password'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = mysqli_real_escape_string($conn, $_POST['username']);
+            $password = mysqli_real_escape_string($conn, $_POST['password']);
             $query = "SELECT * FROM account WHERE username='$username'";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 if ($row = mysqli_fetch_assoc($result)) {
-                    if ((string)$row['password'] == (string)$_POST['password']) {
+                    if ((string)$row['password'] == (string)mysqli_real_escape_string($conn, $_POST['password'])) {
                         $_SESSION['username'] = $row['username'];
                         $_SESSION['status'] = $row['status'];
                         header('Location: dashboard.php');
@@ -35,12 +35,12 @@ switch ($_GET['process']) {
         break;
 
     case 'insert-kendaraan':
-        $nomor_polisi = $_POST['nomor_polisi'];
-        $merk_type = $_POST['merk_type'];
-        $harga_sewa = $_POST['harga_sewa'];
-        $tahun_keluaran = $_POST['tahun_keluaran'];
+        $nomor_polisi = mysqli_real_escape_string($conn, $_POST['nomor_polisi']);
+        $merk_type = mysqli_real_escape_string($conn, $_POST['merk_type']);
+        $harga_sewa = mysqli_real_escape_string($conn, $_POST['harga_sewa']);
+        $tahun_keluaran = mysqli_real_escape_string($conn, $_POST['tahun_keluaran']);
 
-        include('koneksi.php');
+
         $query = "INSERT INTO kendaraan VALUES('$nomor_polisi','$merk_type','$harga_sewa','$tahun_keluaran')";
         if (mysqli_query($conn, $query)) {
             header("Location:kendaraan.php?status=input-berhasil");
@@ -50,13 +50,13 @@ switch ($_GET['process']) {
         mysqli_close($conn);
         break;
     case 'update-kendaraan':
-        $old_nomor_polisi = $_POST['old_nomor_polisi'];
-        $nomor_polisi = $_POST['nomor_polisi'];
-        $merk_type = $_POST['merk_type'];
-        $harga_sewa = $_POST['harga_sewa'];
-        $tahun_keluaran = $_POST['tahun_keluaran'];
+        $old_nomor_polisi = mysqli_real_escape_string($conn, $_POST['old_nomor_polisi']);
+        $nomor_polisi = mysqli_real_escape_string($conn, $_POST['nomor_polisi']);
+        $merk_type = mysqli_real_escape_string($conn, $_POST['merk_type']);
+        $harga_sewa = mysqli_real_escape_string($conn, $_POST['harga_sewa']);
+        $tahun_keluaran = mysqli_real_escape_string($conn, $_POST['tahun_keluaran']);
 
-        include('koneksi.php');
+
         $query = "UPDATE kendaraan SET nomor_polisi='$nomor_polisi',merk_type='$merk_type',harga_sewa=$harga_sewa,tahun_keluaran=$tahun_keluaran WHERE nomor_polisi='$old_nomor_polisi'";
         if (mysqli_query($conn, $query)) {
             header("Location:kendaraan.php?status=update-berhasil");
@@ -68,8 +68,8 @@ switch ($_GET['process']) {
         mysqli_close($conn);
         break;
     case 'delete-kendaraan':
-        $nomor_polisi = $_GET['nomor_polisi'];
-        include('koneksi.php');
+        $nomor_polisi = mysqli_real_escape_string($conn, $_GET['nomor_polisi']);
+
         $query = "DELETE FROM kendaraan WHERE nomor_polisi='$nomor_polisi' ";
         if (mysqli_query($conn, $query)) {
             header("Location:kendaraan.php?status=delete-berhasil");
@@ -80,44 +80,45 @@ switch ($_GET['process']) {
         break;
 
     case 'insert-transaksi':
-        $no_surat_jalan = $_POST['no_surat_jalan'];
-        $nomor_polisi = $_POST['nomor_polisi'];
-        $driver = $_POST['driver'];
-        $no_golongan_sim = $_POST['no_golongan_sim'];
-        $penjemputan = $_POST['penjemputan'];
-        $tgl_dibuat_surat_jln = $_POST['tgl_dibuat_surat_jln'];
-        $tmpt_dibuat_surat_jln = $_POST['tmpt_dibuat_surat_jln'];
-        $penyewa = $_POST['penyewa'];
-        $telepon = $_POST['telepon'];
-        $tujuan = $_POST['tujuan'];
-        $tgl_keberangkatan = $_POST['tgl_keberangkatan'];
-        $tgl_kedatangan = $_POST['tgl_kedatangan'];
-        $keterangan = $_POST['keterangan'];
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_POST['no_surat_jalan']);
+        $nomor_polisi = mysqli_real_escape_string($conn, $_POST['nomor_polisi']);
+        $driver = mysqli_real_escape_string($conn, $_POST['driver']);
+        $no_golongan_sim = mysqli_real_escape_string($conn, $_POST['no_golongan_sim']);
+        $penjemputan = mysqli_real_escape_string($conn, $_POST['penjemputan']);
+        $tgl_dibuat_surat_jln = mysqli_real_escape_string($conn, $_POST['tgl_dibuat_surat_jln']);
+        $tmpt_dibuat_surat_jln = mysqli_real_escape_string($conn, $_POST['tmpt_dibuat_surat_jln']);
+        $penyewa = mysqli_real_escape_string($conn, $_POST['penyewa']);
+        $telepon = mysqli_real_escape_string($conn, $_POST['telepon']);
+        $tujuan = mysqli_real_escape_string($conn, $_POST['tujuan']);
+        $tgl_keberangkatan = mysqli_real_escape_string($conn, $_POST['tgl_keberangkatan']);
+        $tgl_kedatangan = mysqli_real_escape_string($conn, $_POST['tgl_kedatangan']);
+        $keterangan = mysqli_real_escape_string($conn, $_POST['keterangan']);
 
-        include('koneksi.php');
+
         $query = "INSERT INTO transaksi VALUES('$no_surat_jalan','$nomor_polisi','$driver','$no_golongan_sim','$penjemputan','$tgl_dibuat_surat_jln','$tmpt_dibuat_surat_jln','$penyewa','$telepon','$tujuan','$tgl_keberangkatan','$tgl_kedatangan','$keterangan')";
         if (mysqli_query($conn, $query)) {
             header("Location:transaksi.php?status=input-berhasil");
         } else {
-            header("Location:transaksi.php?status=input-gagal");
+            echo mysqli_error($conn);
+            // header("Location:transaksi.php?status=input-gagal");
         }
         break;
     case 'update-transaksi':
-        $no_surat_jalan = $_POST['no_surat_jalan'];
-        $nomor_polisi = $_POST['nomor_polisi'];
-        $driver = $_POST['driver'];
-        $no_golongan_sim = $_POST['no_golongan_sim'];
-        $penjemputan = $_POST['penjemputan'];
-        $tgl_dibuat_surat_jln = $_POST['tgl_dibuat_surat_jln'];
-        $tmpt_dibuat_surat_jln = $_POST['tmpt_dibuat_surat_jln'];
-        $penyewa = $_POST['penyewa'];
-        $telepon = $_POST['telepon'];
-        $tujuan = $_POST['tujuan'];
-        $tgl_keberangkatan = $_POST['tgl_keberangkatan'];
-        $tgl_kedatangan = $_POST['tgl_kedatangan'];
-        $keterangan = $_POST['keterangan'];
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_POST['no_surat_jalan']);
+        $nomor_polisi = mysqli_real_escape_string($conn, $_POST['nomor_polisi']);
+        $driver = mysqli_real_escape_string($conn, $_POST['driver']);
+        $no_golongan_sim = mysqli_real_escape_string($conn, $_POST['no_golongan_sim']);
+        $penjemputan = mysqli_real_escape_string($conn, $_POST['penjemputan']);
+        $tgl_dibuat_surat_jln = mysqli_real_escape_string($conn, $_POST['tgl_dibuat_surat_jln']);
+        $tmpt_dibuat_surat_jln = mysqli_real_escape_string($conn, $_POST['tmpt_dibuat_surat_jln']);
+        $penyewa = mysqli_real_escape_string($conn, $_POST['penyewa']);
+        $telepon = mysqli_real_escape_string($conn, $_POST['telepon']);
+        $tujuan = mysqli_real_escape_string($conn, $_POST['tujuan']);
+        $tgl_keberangkatan = mysqli_real_escape_string($conn, $_POST['tgl_keberangkatan']);
+        $tgl_kedatangan = mysqli_real_escape_string($conn, $_POST['tgl_kedatangan']);
+        $keterangan = mysqli_real_escape_string($conn, $_POST['keterangan']);
 
-        include('koneksi.php');
+
         $query = "UPDATE transaksi SET nomor_polisi='$nomor_polisi',driver='$driver',no_golongan_sim='$no_golongan_sim',penjemputan='$penjemputan',tgl_dibuat_surat_jln='$tgl_dibuat_surat_jln',tmpt_dibuat_surat_jln='$tmpt_dibuat_surat_jln',penyewa='$penyewa',telepon='$telepon',tujuan='$tujuan',tgl_keberangkatan='$tgl_keberangkatan',tgl_kedatangan='$tgl_kedatangan',keterangan='$keterangan' WHERE no_surat_jalan='$no_surat_jalan'";
         if (mysqli_query($conn, $query)) {
             header("Location:transaksi.php?status=update-berhasil");
@@ -126,8 +127,8 @@ switch ($_GET['process']) {
         }
         break;
     case 'delete-transaksi':
-        $no_surat_jalan = $_GET['no_surat_jalan'];
-        include('koneksi.php');
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_GET['no_surat_jalan']);
+
         $query = "DELETE FROM transaksi WHERE no_surat_jalan='$no_surat_jalan' ";
         if (mysqli_query($conn, $query)) {
             header("Location:transaksi.php?status=delete-berhasil");
@@ -138,14 +139,14 @@ switch ($_GET['process']) {
         break;
 
     case 'insert-faktur':
-        $no_faktur = $_POST['no_faktur'];
-        $no_surat_jalan = $_POST['no_surat_jalan'];
-        $tanggal_faktur = $_POST['tanggal_faktur'];
-        $deskripsi_sewa = $_POST['deskripsi_sewa'];
-        $rincian_service = $_POST['rincian_service'];
-        $total_biaya = $_POST['total_biaya'];
+        $no_faktur = mysqli_real_escape_string($conn, $_POST['no_faktur']);
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_POST['no_surat_jalan']);
+        $tanggal_faktur = mysqli_real_escape_string($conn, $_POST['tanggal_faktur']);
+        $deskripsi_sewa = mysqli_real_escape_string($conn, $_POST['deskripsi_sewa']);
+        $rincian_service = mysqli_real_escape_string($conn, $_POST['rincian_service']);
+        $total_biaya = mysqli_real_escape_string($conn, $_POST['total_biaya']);
 
-        include('koneksi.php');
+
         $query = "INSERT INTO faktur VALUES('$no_faktur','$no_surat_jalan','$tanggal_faktur','$deskripsi_sewa','$rincian_service','$total_biaya')";
         if (mysqli_query($conn, $query)) {
             header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=input-berhasil");
@@ -154,15 +155,15 @@ switch ($_GET['process']) {
         }
         break;
     case 'update-faktur':
-        $no_faktur = $_POST['no_faktur'];
-        $no_faktur_old = $_POST['no_faktur_old'];
-        $no_surat_jalan = $_POST['no_surat_jalan'];
-        $tanggal_faktur = $_POST['tanggal_faktur'];
-        $deskripsi_sewa = $_POST['deskripsi_sewa'];
-        $rincian_service = $_POST['rincian_service'];
-        $total_biaya = $_POST['total_biaya'];
+        $no_faktur = mysqli_real_escape_string($conn, $_POST['no_faktur']);
+        $no_faktur_old = mysqli_real_escape_string($conn, $_POST['no_faktur_old']);
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_POST['no_surat_jalan']);
+        $tanggal_faktur = mysqli_real_escape_string($conn, $_POST['tanggal_faktur']);
+        $deskripsi_sewa = mysqli_real_escape_string($conn, $_POST['deskripsi_sewa']);
+        $rincian_service = mysqli_real_escape_string($conn, $_POST['rincian_service']);
+        $total_biaya = mysqli_real_escape_string($conn, $_POST['total_biaya']);
 
-        include('koneksi.php');
+
         $query = "UPDATE faktur SET no_faktur='$no_faktur',tanggal_faktur='$tanggal_faktur',deskripsi_sewa='$deskripsi_sewa',rincian_service='$rincian_service',total_biaya='$total_biaya' WHERE no_surat_jalan='$no_surat_jalan' AND no_faktur='$no_faktur_old'";
         if (mysqli_query($conn, $query)) {
             header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=update-berhasil");
@@ -171,9 +172,9 @@ switch ($_GET['process']) {
         }
         break;
     case 'delete-faktur':
-        $no_surat_jalan = $_GET['no_surat_jalan'];
-        $no_faktur = $_GET['no_faktur'];
-        include('koneksi.php');
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_GET['no_surat_jalan']);
+        $no_faktur = mysqli_real_escape_string($conn, $_GET['no_faktur']);
+
         $query = "DELETE FROM faktur WHERE no_faktur='$no_faktur' ";
         if (mysqli_query($conn, $query)) {
             header("Location:faktur.php?no_surat_jalan=$no_surat_jalan&&status=delete-berhasil");
@@ -184,18 +185,18 @@ switch ($_GET['process']) {
         break;
 
     case 'insert-tanda-terima':
-        $no_tanda_terima = $_POST['no_tanda_terima'];
-        $no_surat_jalan = $_POST['no_surat_jalan'];
-        $tanggal = $_POST['tanggal'];
-        $uang_sejumlah = $_POST['uang_sejumlah'];
+        $no_tanda_terima = mysqli_real_escape_string($conn, $_POST['no_tanda_terima']);
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_POST['no_surat_jalan']);
+        $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
+        $uang_sejumlah = mysqli_real_escape_string($conn, $_POST['uang_sejumlah']);
         $terbilang = terbilang($uang_sejumlah);
-        $untuk_pembayaran = $_POST['untuk_pembayaran'];
+        $untuk_pembayaran = mysqli_real_escape_string($conn, $_POST['untuk_pembayaran']);
         $sisa_pembayaran;
-        $rincian_biaya = $_POST['rincian_biaya'];
+        $rincian_biaya = mysqli_real_escape_string($conn, $_POST['rincian_biaya']);
         $total_biaya;
 
 
-        include('koneksi.php');
+
         $queryTotal = "SELECT sisa_pembayaran as 'total_biaya' FROM tanda_terima WHERE no_surat_jalan='$no_surat_jalan' ORDER BY sisa_pembayaran ASC LIMIT 1";
         $result = mysqli_query($conn, $queryTotal);
         if (mysqli_num_rows($result) < 0) {
@@ -218,18 +219,18 @@ switch ($_GET['process']) {
         }
         break;
     case 'update-tanda-terima':
-        $no_tanda_terima = $_POST['no_tanda_terima'];
-        $no_tanda_terima_old = $_POST['no_tanda_terima_old'];
-        $no_surat_jalan = $_POST['no_surat_jalan'];
-        $tanggal = $_POST['tanggal'];
-        $uang_sejumlah = $_POST['uang_sejumlah'];
+        $no_tanda_terima = mysqli_real_escape_string($conn, $_POST['no_tanda_terima']);
+        $no_tanda_terima_old = mysqli_real_escape_string($conn, $_POST['no_tanda_terima_old']);
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_POST['no_surat_jalan']);
+        $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
+        $uang_sejumlah = mysqli_real_escape_string($conn, $_POST['uang_sejumlah']);
         $terbilang = terbilang($uang_sejumlah);
-        $untuk_pembayaran = $_POST['untuk_pembayaran'];
+        $untuk_pembayaran = mysqli_real_escape_string($conn, $_POST['untuk_pembayaran']);
         $sisa_pembayaran;
-        $rincian_biaya = $_POST['rincian_biaya'];
+        $rincian_biaya = mysqli_real_escape_string($conn, $_POST['rincian_biaya']);
         $total_biaya;
 
-        include('koneksi.php');
+
         $queryTotal = "SELECT sisa_pembayaran as 'total_biaya' FROM tanda_terima WHERE no_surat_jalan='$no_surat_jalan' ORDER BY sisa_pembayaran ASC LIMIT 1";
         $result = mysqli_query($conn, $queryTotal);
         if (mysqli_num_rows($result) < 0) {
@@ -248,9 +249,9 @@ switch ($_GET['process']) {
         }
         break;
     case 'delete-tanda-terima':
-        $no_surat_jalan = $_GET['no_surat_jalan'];
-        $no_tanda_terima = $_GET['no_tanda_terima'];
-        include('koneksi.php');
+        $no_surat_jalan = mysqli_real_escape_string($conn, $_GET['no_surat_jalan']);
+        $no_tanda_terima = mysqli_real_escape_string($conn, $_GET['no_tanda_terima']);
+
         $query = "DELETE FROM tanda_terima WHERE no_tanda_terima='$no_tanda_terima' ";
         if (mysqli_query($conn, $query)) {
             header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=delete-berhasil");
