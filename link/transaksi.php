@@ -39,6 +39,7 @@ $result = mysqli_query($conn, $sql);
                                         <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%;">
                                             <thead>
                                                 <th>No Surat Jalan</th>
+                                                <th>Export & Print</th>
                                                 <th>Faktur</th>
                                                 <th>Tanda Terima</th>
                                                 <th>Nomor Polisi</th>
@@ -62,6 +63,7 @@ $result = mysqli_query($conn, $sql);
                                                         echo "
                                                     <tr>
                                                         <td>$row[no_surat_jalan]</td>
+                                                        <td><a href='surat-jalan_export.php?no_surat_jalan=$row[no_surat_jalan]'>Export & Print</a></td>
                                                         <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
                                                         <td><a href='tanda-terima.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Tanda Terima</a></td>
                                                         <td>$row[nomor_polisi]</td>
@@ -107,11 +109,11 @@ $result = mysqli_query($conn, $sql);
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label>Tanggal Keberangkat</label>
-                                            <input type="date" name="tgl_keberangkatan" class="form-control" required placeholder="Tanggal Keberangkatan">
+                                            <input type="datetime-local" name="tgl_keberangkatan" class="form-control" required placeholder="Tanggal Keberangkatan">
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label>Tanggal Kedatangan</label>
-                                            <input type="date" name="tgl_kedatangan" class="form-control" required placeholder="Tanggal Kedatangan">
+                                            <input type="datetime-local" name="tgl_kedatangan" class="form-control" required placeholder="Tanggal Kedatangan">
                                         </div>
                                         <input class="btn btn-primary col-md-12" type="submit" value="Cari">
                                     </form>
