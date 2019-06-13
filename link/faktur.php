@@ -50,6 +50,7 @@ $result = mysqli_query($conn, $sql);
                                             <thead>
                                                 <th>No Surat Jalan</th>
                                                 <th>No Faktur</th>
+                                                <th>Export & Print</th>
                                                 <th>Tanggal Faktur</th>
                                                 <th>Deskripsi Sewa</th>
                                                 <th>Rincian Service</th>
@@ -64,6 +65,7 @@ $result = mysqli_query($conn, $sql);
                                                     <tr>
                                                         <td>$row[no_surat_jalan]</td>
                                                         <td>$row[no_faktur]</td>
+                                                        <td><a href='faktur_export.php?no_faktur=$row[no_faktur]' class='btn btn-warning'>Export & Print</a></td>
                                                         <td>$row[tanggal_faktur]</td>
                                                         <td>$row[deskripsi_sewa]</td>
                                                         <td>$row[rincian_service]</td>
