@@ -24,49 +24,45 @@ $page = "laporan";
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title">Laporan Pemasukan</h4>
+                                    <h4 class="title">Export Laporan</h4>
                                     <p class="category"></p>
                                 </div>
                                 <div class="content">
+                                    <form method="post" action="process.php?process=export-laporan">
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                <label>Tanggal Awal</label>
+                                                <input type="date" name="tanggal_awal" class="form-control" placeholder="Tanggal Awal" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Tanggal Akhir</label>
+                                                <input type="date" name="tanggal_akhir" class="form-control" placeholder="Tanggal Akhir" required>
+                                            </div>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h4 class="title">Laporan Klien</h4>
-                                    <p class="category"></p>
-                                </div>
-                                <div class="content">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="header">
-                                    <h4 class="title">Laporan Kendaraan</h4>
-                                    <p class="category"></p>
-                                </div>
-                                <div class="content">
-
+                                            <div class="form-group">
+                                                <label>Jenis Laporan</label>
+                                                <select name="jenis_laporan" class="form-control">
+                                                    <option value="pendapatan">LAPORAN PENDAPATAN</option>
+                                                    <option value="klien">LAPORAN KLIEN</option>
+                                                    <option value="klien_lunas">LAPORAN KLIEN LUNAS</option>
+                                                    <option value="klien_belum_lunas">LAPORAN KLIEN BELUM LUNAS</option>
+                                                    <option value="kendaraan">LAPORAN KENDARAAN</option>
+                                                    <option value="kat_penjemputan">LAPORAN KATEGORI PENJEMPUTAN</option>
+                                                    <option value="kat_tujuan">LAPORAN KATEGORI TUJUAN</option>
+                                                    <option value="kat_merek">LAPORAN KATEGORI MEREK</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <input class="btn btn-primary" type="submit" value="Export">
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            - laporan pemasukan
-            - laporan data klien keseluruhan
-            - laporan data klien (lunas / belum)
-            - laporan data kendaraan
-            <?php include('footer.php'); ?>
 
+            <?php include('footer.php'); ?>
 
         </div>
     </div>

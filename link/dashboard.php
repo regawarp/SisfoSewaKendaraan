@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
     header('Location:login.php');
 }
 $page = "dashboard";
@@ -21,7 +21,114 @@ $page = "dashboard";
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        
+                        <div class="col-md-2">
+                            <div class="card">
+                                <div class="content d-flex align-items-center" >
+                                    <span class="dash-count">70</span>
+                                    <div class="footer">
+                                        <span>Kendaraan</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card">
+                                <div class="content">
+                                    <span class="dash-count">70</span>
+                                    <div class="footer">
+                                        <span>Pelanggan</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card">
+                                <div class="content">
+                                    <span class="dash-count">70</span>
+                                    <div class="footer">
+                                        <span>Peminjaman</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card">
+                                <div class="content">
+                                    <span class="dash-count">70</span>
+                                    <div class="footer">
+                                        <span>Lunas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card">
+                                <div class="content">
+                                    <span class="dash-count">70</span>
+                                    <div class="footer">
+                                        <span>Belum Lunas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card">
+                                <div class="content">
+                                    <span class="dash-count">70</span>
+                                    <div class="footer">
+                                        <span>Total Pendapatan</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card">
+
+                                <div class="header">
+                                    <h4 class="title">Email Statistics</h4>
+                                    <p class="category">Last Campaign Performance</p>
+                                </div>
+                                <div class="content">
+                                    <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+
+                                    <div class="footer">
+                                        <div class="legend">
+                                            <i class="fa fa-circle text-info"></i> Open
+                                            <i class="fa fa-circle text-danger"></i> Bounce
+                                            <i class="fa fa-circle text-warning"></i> Unsubscribe
+                                        </div>
+                                        <hr>
+                                        <div class="stats">
+                                            <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Users Behavior</h4>
+                                    <p class="category">24 Hours performance</p>
+                                </div>
+                                <div class="content">
+                                    <div id="chartHours" class="ct-chart"></div>
+                                    <div class="footer">
+                                        <div class="legend">
+                                            <i class="fa fa-circle text-info"></i> Open
+                                            <i class="fa fa-circle text-danger"></i> Click
+                                            <i class="fa fa-circle text-warning"></i> Click Second Time
+                                        </div>
+                                        <hr>
+                                        <div class="stats">
+                                            <i class="fa fa-history"></i> Updated 3 minutes ago
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,24 +142,32 @@ $page = "dashboard";
 
 </body>
 
-<!--   Core JS Files   -->
-<script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<?php include('js.php'); ?>
 
-<!--  Charts Plugin -->
-<script src="assets/js/chartist.min.js"></script>
+<script type="text/javascript">
+    var dataPreferences = {
+        series: [
+            [25, 30, 20, 25]
+        ]
+    };
 
-<!--  Notifications Plugin    -->
-<script src="assets/js/bootstrap-notify.js"></script>
+    var optionsPreferences = {
+        donut: true,
+        donutWidth: 40,
+        startAngle: 0,
+        total: 100,
+        showLabel: false,
+        axisX: {
+            showGrid: false
+        }
+    };
 
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+    Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
 
-<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
-
-<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-<script src="assets/js/demo.js"></script>
-
+    Chartist.Pie('#chartPreferences', {
+        labels: ['62%', '32%', '6%'],
+        series: [62, 32, 6]
+    });
+</script>
 
 </html>

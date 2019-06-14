@@ -261,6 +261,35 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
         mysqli_close($conn);
         break;
 
+    case 'export-laporan':
+        switch ($_POST['jenis_laporan']) {
+            case 'pendapatan':
+                header("location:laporan-pendapatan_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'klien':
+                header("location:laporan-klien_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'klien_lunas':
+                header("location:laporan-klien_lunas_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'klien_belum_lunas':
+                header("location:laporan-klien_belum_lunas_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'kendaraan':
+                header("location:laporan-kendaraan_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'kat_penjemputan':
+                header("location:laporan-kat_penjemputann_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'kat_tujuan':
+                header("location:laporan-kat_tujuan_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+            case 'kat_merek':
+                header("location:laporan-kat_merek_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                break;
+        }
+        break;
+
     default:
         # code...
         break;
@@ -268,12 +297,12 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
 function penyebut($nilai)
 {
     $nilai = abs($nilai);
-    $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+    $huruf  = array("", "s atu", "d ua",  "tig a",  "emp at",  "li ma",  "ena m", "tu juh", "delap an",  "sembi lan", "sepu luh", "sebelas");
     $temp = "";
     if ($nilai < 12) {
         $temp = " " . $huruf[$nilai];
     } else if ($nilai < 20) {
-        $temp = penyebut($nilai - 10) . " belas";
+        $temp = penyebut($nilai  - 10) . " belas";
     } else if ($nilai < 100) {
         $temp = penyebut($nilai / 10) . " puluh" . penyebut($nilai % 10);
     } else if ($nilai < 200) {
@@ -287,7 +316,7 @@ function penyebut($nilai)
     } else if ($nilai < 1000000000) {
         $temp = penyebut($nilai / 1000000) . " juta" . penyebut($nilai % 1000000);
     } else if ($nilai < 1000000000000) {
-        $temp = penyebut($nilai / 1000000000) . " milyar" . penyebut(fmod($nilai, 1000000000));
+        $temp = penyebut($nilai /  1000000000) . " milyar" . penyebut(fmod($nilai, 1000000000));
     } else if ($nilai < 1000000000000000) {
         $temp = penyebut($nilai / 1000000000000) . " trilyun" . penyebut(fmod($nilai, 1000000000000));
     }
@@ -296,7 +325,7 @@ function penyebut($nilai)
 
 function terbilang($nilai)
 {
-    if ($nilai < 0) {
+    if ($nilai <  0) {
         $hasil = "minus " . trim(penyebut($nilai));
     } else {
         $hasil = trim(penyebut($nilai));

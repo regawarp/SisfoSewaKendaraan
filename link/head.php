@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.ico">
+    <link rel="icon" type="image/png" href="../assets/img/logo-dutar-ico.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
     <title>PT. DUTAR Barokah Grup</title>
@@ -32,6 +32,12 @@
 
         td {
             font-size: 12px;
+        }
+
+        .dash-count {
+            font-size: 14pt;
+            color: #30318B;
+            text-align: center;
         }
     </style>
 
