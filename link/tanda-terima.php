@@ -50,6 +50,7 @@ $result = mysqli_query($conn, $sql);
                                             <thead>
                                                 <th>No Surat Jalan</th>
                                                 <th>No Tanda Terima</th>
+                                                <th>Export & Print</th>
                                                 <th>Tanggal</th>
                                                 <th>Terbilang</th>
                                                 <th>Uang Sejumlah</th>
@@ -66,6 +67,7 @@ $result = mysqli_query($conn, $sql);
                                                     <tr>
                                                         <td>$row[no_surat_jalan]</td>
                                                         <td>$row[no_tanda_terima]</td>
+                                                        <td><a href='tanda-terima_export.php?no_tanda_terima=$row[no_tanda_terima]' class='btn btn-warning'>Export & Print</a></td>
                                                         <td>$row[tanggal]</td>
                                                         <td>$row[terbilang]</td>
                                                         <td>$row[uang_sejumlah]</td>
