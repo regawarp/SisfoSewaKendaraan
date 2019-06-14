@@ -279,7 +279,7 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
                 header("location:laporan-kendaraan_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
                 break;
             case 'kat_penjemputan':
-                header("location:laporan-kat_penjemputann_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
+                header("location:laporan-kat_penjemputan_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
                 break;
             case 'kat_tujuan':
                 header("location:laporan-kat_tujuan_export.php?tanggal_awal=$_POST[tanggal_awal]&&tanggal_akhir=$_POST[tanggal_akhir]");
