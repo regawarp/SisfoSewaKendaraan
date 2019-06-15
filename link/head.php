@@ -36,7 +36,7 @@
 
         .dash-count {
             font-size: 14pt;
-            color: #30318B;
+            color: #EB6123;
             text-align: center;
         }
     </style>
