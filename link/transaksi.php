@@ -109,11 +109,11 @@ $result = mysqli_query($conn, $sql);
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label>Tanggal Keberangkat</label>
-                                            <input type="datetime-local" name="tgl_keberangkatan" class="form-control" required placeholder="Tanggal Keberangkatan">
+                                            <input type="date" name="tgl_keberangkatan" class="form-control" required placeholder="Tanggal Keberangkatan">
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label>Tanggal Kedatangan</label>
-                                            <input type="datetime-local" name="tgl_kedatangan" class="form-control" required placeholder="Tanggal Kedatangan">
+                                            <input type="date" name="tgl_kedatangan" class="form-control" required placeholder="Tanggal Kedatangan">
                                         </div>
                                         <input class="btn btn-primary col-md-12" type="submit" value="Cari">
                                     </form>
