@@ -105,7 +105,7 @@ $result = mysqli_query($conn, $sql);
                                         <input type="hidden" name="cari" value="yes">
                                         <div class="form-group col-lg-12">
                                             <label>Merk/Type</label>
-                                            <input type="text" name="merk_tipe" class="form-control" placeholder="Merk/Type">
+                                            <input type="text" name="merk_type" class="form-control" placeholder="Merk/Type">
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label>Tanggal Keberangkat</label>
@@ -130,12 +130,17 @@ $result = mysqli_query($conn, $sql);
                                             if (isset($_POST['cari'])) {
                                                 $tgl_keberangkatan = date('Y-m-d', strtotime($_POST['tgl_keberangkatan']));
                                                 $tgl_kedatangan = date('Y-m-d', strtotime($_POST['tgl_kedatangan']));
-                                                $merk_tipe = $_POST['merk_tipe'];
+                                                $merk_type = $_POST['merk_type'];
                                                 echo "<span>Tanggal: $tgl_keberangkatan - $tgl_kedatangan</span>";
                                                 ?>
                                                 <tbody>
                                                     <?php
-                                                    $sql = "SELECT * FROM transaksi RIGHT JOIN kendaraan ON(transaksi.nomor_polisi=kendaraan.nomor_polisi) WHERE ('$tgl_keberangkatan' != tgl_keberangkatan AND '$tgl_keberangkatan' != tgl_kedatangan AND ('$tgl_keberangkatan' NOT BETWEEN tgl_keberangkatan AND tgl_kedatangan) AND '$tgl_kedatangan' != tgl_keberangkatan AND '$tgl_kedatangan' != tgl_kedatangan AND ('$tgl_kedatangan' NOT BETWEEN tgl_keberangkatan AND tgl_kedatangan) AND tgl_kedatangan NOT BETWEEN '$tgl_keberangkatan' AND '$tgl_kedatangan') OR tgl_keberangkatan IS NULL";
+                                                    $sql;
+                                                    if ($merk_type != "") {
+                                                        $sql = "SELECT * FROM transaksi RIGHT JOIN kendaraan ON(transaksi.nomor_polisi=kendaraan.nomor_polisi) WHERE merk_type='$merk_type' AND ('$tgl_keberangkatan' != tgl_keberangkatan AND '$tgl_keberangkatan' != tgl_kedatangan AND ('$tgl_keberangkatan' NOT BETWEEN tgl_keberangkatan AND tgl_kedatangan) AND '$tgl_kedatangan' != tgl_keberangkatan AND '$tgl_kedatangan' != tgl_kedatangan AND ('$tgl_kedatangan' NOT BETWEEN tgl_keberangkatan AND tgl_kedatangan) AND tgl_kedatangan NOT BETWEEN '$tgl_keberangkatan' AND '$tgl_kedatangan') OR tgl_keberangkatan IS NULL";
+                                                    } else {
+                                                        $sql = "SELECT * FROM transaksi RIGHT JOIN kendaraan ON(transaksi.nomor_polisi=kendaraan.nomor_polisi) WHERE ('$tgl_keberangkatan' != tgl_keberangkatan AND '$tgl_keberangkatan' != tgl_kedatangan AND ('$tgl_keberangkatan' NOT BETWEEN tgl_keberangkatan AND tgl_kedatangan) AND '$tgl_kedatangan' != tgl_keberangkatan AND '$tgl_kedatangan' != tgl_kedatangan AND ('$tgl_kedatangan' NOT BETWEEN tgl_keberangkatan AND tgl_kedatangan) AND tgl_kedatangan NOT BETWEEN '$tgl_keberangkatan' AND '$tgl_kedatangan') OR tgl_keberangkatan IS NULL";
+                                                    }
                                                     $result = mysqli_query($conn, $sql);
                                                     if (mysqli_num_rows($result)) {
                                                         while ($row = mysqli_fetch_assoc($result)) {
