@@ -70,6 +70,14 @@
                     <p>Laporan</p>
                 </a>
             </li>
+            <li <?php if ($page == "akun") {
+                    echo "class='active'";
+                } ?>>
+                <a href="akun.php">
+                    <i class="pe-7s-users"></i>
+                    <p>Akun</p>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

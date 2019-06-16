@@ -261,6 +261,47 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
         mysqli_close($conn);
         break;
 
+    case 'insert-akun':
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+        $status = mysqli_real_escape_string($conn, $_POST['status']);
+
+
+        $query = "INSERT INTO account VALUES('$username','$password','$status')";
+        if (mysqli_query($conn, $query)) {
+            header("Location:akun.php?status=input-berhasil");
+        } else {
+            header("Location:akun.php?status=input-gagal");
+        }
+        mysqli_close($conn);
+        break;
+    case 'update-akun':
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+        $status = mysqli_real_escape_string($conn, $_POST['status']);
+
+        $query = "UPDATE account SET username='$username',password='$password',status='$status' WHERE username='$username'";
+        if (mysqli_query($conn, $query)) {
+            header("Location:akun.php?status=update-berhasil");
+            // echo "BErhasil : $query";
+        } else {
+            header("Location:akun.php?status=update-gagal");
+            // echo "$query";
+        }
+        mysqli_close($conn);
+        break;
+    case 'delete-akun':
+        $username = mysqli_real_escape_string($conn, $_GET['username']);
+
+        $query = "DELETE FROM account WHERE username='$username' ";
+        if (mysqli_query($conn, $query)) {
+            header("Location:akun.php?status=delete-berhasil");
+        } else {
+            header("Location:akun.php?status=delete-gagal");
+        }
+        mysqli_close($conn);
+        break;
+
     case 'export-laporan':
         switch ($_POST['jenis_laporan']) {
             case 'pendapatan':
