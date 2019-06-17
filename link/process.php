@@ -97,6 +97,8 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
 
         $query = "INSERT INTO transaksi VALUES('$no_surat_jalan','$nomor_polisi','$driver','$no_golongan_sim','$penjemputan','$tgl_dibuat_surat_jln','$tmpt_dibuat_surat_jln','$penyewa','$telepon','$tujuan','$tgl_keberangkatan','$tgl_kedatangan','$keterangan')";
         if (mysqli_query($conn, $query)) {
+            $query = "INSERT INTO faktur VALUES('$no_surat_jalan/F1','$no_surat_jalan','$tgl_dibuat_surat_jln','-','-',0)";
+            mysqli_query($conn, $query);
             header("Location:transaksi.php?status=input-berhasil");
         } else {
             echo mysqli_error($conn);
@@ -195,6 +197,21 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
         $rincian_biaya = mysqli_real_escape_string($conn, $_POST['rincian_biaya']);
         $total_biaya;
 
+        // HITUNG BIAYA SEWA
+        $query = "SELECT * FROM transaksi,kendaraan WHERE transaksi.nomor_polisi=kendaraan.nomor_polisi AND no_surat_jalan='$no_surat_jalan'";
+        $row = mysqli_fetch_assoc(mysqli_query($conn, $query));
+        $jmlHari;
+        if ($row['tgl_keberangkatan'] == $row['tgl_kedatangan']) {
+            $jmlHari = 1;
+        } else {
+            $keberangkatan = strtotime($row['tgl_keberangkatan']);
+            $kedatangan = strtotime($row['tgl_kedatangan']);
+            $datediff = $kedatangan - $keberangkatan;
+            $jmlHari = round($datediff / (60 * 60 * 24));
+        }
+        $totalBiayaSewa = $row['harga_sewa'] * $jmlHari;
+        // END HITUNG BIAYA SEWA
+
         $queryTotal = "SELECT sisa_pembayaran as 'total_biaya' FROM tanda_terima WHERE no_surat_jalan='$no_surat_jalan' ORDER BY sisa_pembayaran ASC LIMIT 1";
         $result = mysqli_query($conn, $queryTotal);
         if (mysqli_num_rows($result) <= 0) {
@@ -202,7 +219,7 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
             $result = mysqli_query($conn, $queryTotal);
         }
         $row = mysqli_fetch_assoc($result);
-        $total_biaya = $row['total_biaya'];
+        $total_biaya = $row['total_biaya'] + $totalBiayaSewa;
         $sisa_pembayaran = $total_biaya - $uang_sejumlah;
         $query = "INSERT INTO tanda_terima VALUES('$no_tanda_terima','$no_surat_jalan','$tanggal','$terbilang','$uang_sejumlah','$untuk_pembayaran','$sisa_pembayaran','$rincian_biaya')";
         if (mysqli_query($conn, $query)) {
@@ -212,7 +229,8 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
             }
             header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-berhasil");
         } else {
-            header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-gagal");
+            // header("Location:tanda-terima.php?no_surat_jalan=$no_surat_jalan&&status=input-gagal");
+            echo mysqli_error($conn);
         }
         break;
     case 'update-tanda-terima':
@@ -335,7 +353,7 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
 function penyebut($nilai)
 {
     $nilai = abs($nilai);
-    $huruf  = array("", "s atu", "d ua",  "tig a",  "emp at",  "li ma",  "ena m", "tu juh", "delap an",  "sembi lan", "sepu luh", "sebelas");
+    $huruf  = array("", "satu", "dua",  "tiga",  "empat",  "lima",  "enam", "tujuh", "delapan",  "sembilan", "sepuluh", "sebelas");
     $temp = "";
     if ($nilai < 12) {
         $temp = " " . $huruf[$nilai];

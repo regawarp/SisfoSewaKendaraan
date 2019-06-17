@@ -79,10 +79,7 @@ $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValue('G29', 'PT.Dutar Barokah Grup')
     ->setCellValue('G35', 'Taufik Hamzah')
     ->setCellValue('G36', 'Manager Transportasi');
-
-
-
-
+    
 // DATA
 include('koneksi.php');
 $no_faktur = $_GET['no_faktur'];
@@ -97,8 +94,8 @@ if ($row['tgl_keberangkatan'] == $row['tgl_kedatangan']) {
     $datediff = $kedatangan - $keberangkatan;
     $jmlHari = round($datediff / (60 * 60 * 24));
 }
-setlocale(LC_ALL, 'IND');
 $totalBiaya = $row['harga_sewa'] * $jmlHari;
+$totalAllBiaya = $totalBiaya + $row['total_biaya'];
 $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValue('C6', $row['no_faktur'])
     ->setCellValue('C7', DateTime::createFromFormat("Y-m-d", $row['tanggal_faktur'])->format("d F Y"))
@@ -114,8 +111,10 @@ $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValue('A17', $jmlHari)
     ->setCellValue('G17', $row['harga_sewa'])
     ->setCellValue('H17', $totalBiaya)
-    ->setCellValue('B25', terbilang($totalBiaya))
-    ->setCellValue('H25', $totalBiaya)
+    ->setCellValue('A19', $row['rincian_service'])
+    ->setCellValue('H19', $row['total_biaya'])
+    ->setCellValue('B25', terbilang($totalAllBiaya))
+    ->setCellValue('H25', $totalAllBiaya)
     ->setCellValue('D35', $row['penyewa']);
 mysqli_close($conn);
 
@@ -159,7 +158,7 @@ $objPHPExcel->setActiveSheetIndex(0)->getStyle('G28:I37')->applyFromArray($outli
 
 $objPHPExcel->setActiveSheetIndex(0)->getStyle('H1:I2')->applyFromArray($centeredText);
 $objPHPExcel->setActiveSheetIndex(0)->getStyle('A14:I15')->applyFromArray($centeredText);
-$objPHPExcel->setActiveSheetIndex(0)->getStyle('A17:I17')->applyFromArray($centeredText);
+$objPHPExcel->setActiveSheetIndex(0)->getStyle('A17:I19')->applyFromArray($centeredText);
 $objPHPExcel->setActiveSheetIndex(0)->getStyle('A25:I26')->applyFromArray($centeredText);
 $objPHPExcel->setActiveSheetIndex(0)->getStyle('D28:I37')->applyFromArray($centeredText);
 
@@ -180,15 +179,17 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(13);
 $objPHPExcel->setActiveSheetIndex(0)
     ->mergeCells('H1:I2')
     ->mergeCells('A25:A26')
+    ->mergeCells('A29:C29')
     ->mergeCells('B25:G26')
     ->mergeCells('H25:I26')
-    ->mergeCells('A29:B29')
     ->mergeCells('D29:F29')
     ->mergeCells('D35:F35')
     ->mergeCells('G29:I29')
     ->mergeCells('G35:I35')
     ->mergeCells('G36:I36')
-    ->mergeCells('H17:I17');
+    ->mergeCells('H14:I15')
+    ->mergeCells('H17:I17')
+    ->mergeCells('H19:I19');
 
 // Rename worksheet
 $objPHPExcel->getActiveSheet()->setTitle('Faktur');
