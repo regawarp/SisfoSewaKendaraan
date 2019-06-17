@@ -195,18 +195,15 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
         $rincian_biaya = mysqli_real_escape_string($conn, $_POST['rincian_biaya']);
         $total_biaya;
 
-
-
         $queryTotal = "SELECT sisa_pembayaran as 'total_biaya' FROM tanda_terima WHERE no_surat_jalan='$no_surat_jalan' ORDER BY sisa_pembayaran ASC LIMIT 1";
         $result = mysqli_query($conn, $queryTotal);
-        if (mysqli_num_rows($result) < 0) {
+        if (mysqli_num_rows($result) <= 0) {
             $queryTotal = "SELECT SUM(total_biaya) as 'total_biaya' FROM faktur WHERE no_surat_jalan='$no_surat_jalan'";
             $result = mysqli_query($conn, $queryTotal);
         }
         $row = mysqli_fetch_assoc($result);
         $total_biaya = $row['total_biaya'];
         $sisa_pembayaran = $total_biaya - $uang_sejumlah;
-
         $query = "INSERT INTO tanda_terima VALUES('$no_tanda_terima','$no_surat_jalan','$tanggal','$terbilang','$uang_sejumlah','$untuk_pembayaran','$sisa_pembayaran','$rincian_biaya')";
         if (mysqli_query($conn, $query)) {
             if ($sisa_pembayaran <= 0) {
