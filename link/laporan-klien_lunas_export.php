@@ -71,11 +71,24 @@ $objPHPExcel->setActiveSheetIndex(0)
 include('koneksi.php');
 $tanggal_awal = $_GET['tanggal_awal'];
 $tanggal_akhir = $_GET['tanggal_akhir'];
-$query = "SELECT * FROM transaksi,faktur WHERE transaksi.no_surat_jalan=faktur.no_surat_jalan AND keterangan='Lunas' AND ((tgl_dibuat_surat_jln  BETWEEN '$tanggal_awal' AND '$tanggal_akhir') OR tgl_dibuat_surat_jln='$tanggal_awal' OR tgl_dibuat_surat_jln='$tanggal_akhir') ORDER BY tgl_dibuat_surat_jln ASC";
+$query = "SELECT * FROM transaksi,faktur,kendaraan WHERE transaksi.no_surat_jalan=faktur.no_surat_jalan AND transaksi.nomor_polisi=kendaraan.nomor_polisi AND keterangan='Lunas' AND ((tgl_dibuat_surat_jln  BETWEEN '$tanggal_awal' AND '$tanggal_akhir') OR tgl_dibuat_surat_jln='$tanggal_awal' OR tgl_dibuat_surat_jln='$tanggal_akhir') ORDER BY tgl_dibuat_surat_jln ASC";
 $result = mysqli_query($conn, $query);
 $total = 0;
 $countRow = 6;
 while ($row = mysqli_fetch_assoc($result)) {
+    // HITUNG HARGA SEWA
+    $jmlHari;
+    if ($row['tgl_keberangkatan'] == $row['tgl_kedatangan']) {
+        $jmlHari = 1;
+    } else {
+        $keberangkatan = strtotime($row['tgl_keberangkatan']);
+        $kedatangan = strtotime($row['tgl_kedatangan']);
+        $datediff = $kedatangan - $keberangkatan;
+        $jmlHari = round($datediff / (60 * 60 * 24));
+    }
+    $totalBiayaSewa = $row['harga_sewa'] * $jmlHari;
+    // HITUNG HARGA SEWA
+
     $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A' . $countRow, $row['penyewa'])
         ->setCellValue('B' . $countRow, $row['telepon'])
@@ -87,8 +100,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         ->setCellValue('H' . $countRow, $row['tujuan'])
         ->setCellValue('I' . $countRow, DateTime::createFromFormat("Y-m-d H:i:s", $row['tgl_keberangkatan'])->format("d/m/Y"))
         ->setCellValue('J' . $countRow, DateTime::createFromFormat("Y-m-d H:i:s", $row['tgl_kedatangan'])->format("d/m/Y"))
-        ->setCellValue('K' . $countRow, $row['total_biaya']);
-    $total += $row['total_biaya'];
+        ->setCellValue('K' . $countRow, $row['total_biaya'] + $totalBiayaSewa);
+    $total += ($row['total_biaya'] + $totalBiayaSewa);
     $countRow++;
 }
 $objPHPExcel->setActiveSheetIndex(0)

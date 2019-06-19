@@ -71,11 +71,39 @@ $objPHPExcel->setActiveSheetIndex(0)
 include('koneksi.php');
 $tanggal_awal = $_GET['tanggal_awal'];
 $tanggal_akhir = $_GET['tanggal_akhir'];
-$query = "SELECT * FROM transaksi,faktur WHERE transaksi.no_surat_jalan=faktur.no_surat_jalan AND keterangan='Belum Lunas' AND ((tgl_dibuat_surat_jln  BETWEEN '$tanggal_awal' AND '$tanggal_akhir') OR tgl_dibuat_surat_jln='$tanggal_awal' OR tgl_dibuat_surat_jln='$tanggal_akhir') ORDER BY tgl_dibuat_surat_jln ASC";
+
+$query = "SELECT * FROM transaksi,kendaraan WHERE transaksi.nomor_polisi=kendaraan.nomor_polisi AND keterangan='Belum Lunas' AND ((tgl_dibuat_surat_jln  BETWEEN '$tanggal_awal' AND '$tanggal_akhir') OR tgl_dibuat_surat_jln='$tanggal_awal' OR tgl_dibuat_surat_jln='$tanggal_akhir') ORDER BY tgl_dibuat_surat_jln ASC";
 $result = mysqli_query($conn, $query);
 $total = 0;
 $countRow = 6;
 while ($row = mysqli_fetch_assoc($result)) {
+
+    // // HITUNG HARGA SEWA
+    $jmlHari;
+    if ($row['tgl_keberangkatan'] == $row['tgl_kedatangan']) {
+        $jmlHari = 1;
+    } else {
+        $keberangkatan = strtotime($row['tgl_keberangkatan']);
+        $kedatangan = strtotime($row['tgl_kedatangan']);
+        $datediff = $kedatangan - $keberangkatan;
+        $jmlHari = round($datediff / (60 * 60 * 24));
+    }
+    $totalBiayaSewa = $row['harga_sewa'] * $jmlHari;
+    // // HITUNG HARGA SEWA
+
+    // HITUNG SISA PEMBAYARAN
+    $sisaPembayaran = 0;
+    $querySisa = "SELECT sisa_pembayaran FROM tanda_terima WHERE no_surat_jalan='$row[no_surat_jalan]' ORDER BY sisa_pembayaran ASC LIMIT 1";
+    $resultSisa = mysqli_query($conn, $querySisa);
+    if (mysqli_num_rows($resultSisa) <= 0) {
+        $querySisa = "SELECT SUM(total_biaya) as 'sisa_pembayaran' FROM faktur WHERE no_surat_jalan='$row[no_surat_jalan]'";
+        $resultSisa = mysqli_query($conn, $querySisa);
+        $sisaPembayaran += $totalBiayaSewa;
+    }
+    $rowSisa = mysqli_fetch_assoc($resultSisa);
+    $sisaPembayaran += $rowSisa['sisa_pembayaran'];
+    // HITUNG SISA PEMBAYARAN
+
     $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('A' . $countRow, $row['penyewa'])
         ->setCellValue('B' . $countRow, $row['telepon'])
@@ -87,8 +115,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         ->setCellValue('H' . $countRow, $row['tujuan'])
         ->setCellValue('I' . $countRow, DateTime::createFromFormat("Y-m-d H:i:s", $row['tgl_keberangkatan'])->format("d/m/Y"))
         ->setCellValue('J' . $countRow, DateTime::createFromFormat("Y-m-d H:i:s", $row['tgl_kedatangan'])->format("d/m/Y"))
-        ->setCellValue('K' . $countRow, $row['total_biaya']);
-    $total += $row['total_biaya'];
+        ->setCellValue('K' . $countRow, $sisaPembayaran);
+    $total += $sisaPembayaran;
     $countRow++;
 }
 $objPHPExcel->setActiveSheetIndex(0)
