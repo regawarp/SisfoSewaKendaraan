@@ -7,9 +7,9 @@ if (isset($_GET['status'])) {
 if (!isset($_SESSION['username'])) {
     header('Location:login.php');
 }
-$page = "transaksi";
+$page = "booked";
 include('koneksi.php');
-$sql = "SELECT * FROM transaksi";
+$sql = "SELECT * FROM booked";
 $result = mysqli_query($conn, $sql);
 ?>
 <!doctype html>
@@ -31,29 +31,16 @@ $result = mysqli_query($conn, $sql);
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title">Data Surat Jalan</h4>
-                                    <p class="category">Semua Data Surat Jalan</p>
+                                    <h4 class="title">Data Booking</h4>
+                                    <p class="category">Semua Data Booking</p>
                                 </div>
                                 <div class="content">
                                     <div class="content table-responsive table-full-width">
                                         <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%;">
-                                            <thead>
-                                                <th>No Surat Jalan</th>
-                                                <th>Export & Print</th>
-                                                <th>Faktur</th>
-                                                <th>Tanda Terima</th>
+                                        <thead>
                                                 <th>Nomor Polisi</th>
-                                                <th>Driver</th>
-                                                <th>No. Golongan SIM</th>
-                                                <th>Penjemputan</th>
-                                                <th>Tanggal dibuat Surat Jalan</th>
-                                                <th>Tempat dibuat Surat Jalan</th>
-                                                <th>Penyewa</th>
-                                                <th>Telepon</th>
-                                                <th>Tujuan</th>
                                                 <th>Tanggal Keberangkatan</th>
                                                 <th>Tanggal Kedatangan</th>
-                                                <th>Keterangan</th>
                                                 <th>Option</th>
                                             </thead>
                                             <tbody>
@@ -62,28 +49,15 @@ $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         echo "
                                                     <tr>
-                                                        <td>$row[no_surat_jalan]</td>
-                                                        <td><a href='surat-jalan_export.php?no_surat_jalan=$row[no_surat_jalan]'>Export & Print</a></td>
-                                                        <td><a href='faktur.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Faktur</a></td>
-                                                        <td><a href='tanda-terima.php?no_surat_jalan=$row[no_surat_jalan]'>Lihat Tanda Terima</a></td>
                                                         <td>$row[nomor_polisi]</td>
-                                                        <td>$row[driver]</td>
-                                                        <td>$row[no_golongan_sim]</td>
-                                                        <td>$row[penjemputan]</td>
-                                                        <td>$row[tgl_dibuat_surat_jln]</td>
-                                                        <td>$row[tmpt_dibuat_surat_jln]</td>
-                                                        <td>$row[penyewa]</td>
-                                                        <td>$row[telepon]</td>
-                                                        <td>$row[tujuan]</td>
                                                         <td>$row[tgl_keberangkatan]</td>
                                                         <td>$row[tgl_kedatangan]</td>
-                                                        <td>$row[keterangan]</td>
-                                                        <td><a href='transaksi_update.php?no_surat_jalan=$row[no_surat_jalan]' class='btn btn-warning'>Update</a>&nbsp;<a href='process.php?process=delete-transaksi&&no_surat_jalan=$row[no_surat_jalan]' class='btn btn-danger'>Delete</a></td>
+                                                        <td><a href='transaksi.php?nomor_polisi=$row[nomor_polisi]&&tgl_keberangkatan=".DateTime::createFromFormat("Y-m-d H:i:s", $row['tgl_keberangkatan'])->format("Y-m-d")."&&tgl_kedatangan=".DateTime::createFromFormat("Y-m-d H:i:s", $row['tgl_kedatangan'])->format("Y-m-d")."#input-transaksi' class='btn btn-success'>Buat Surat Jalan</a>&nbsp;<a href='process.php?process=delete-booked&&id_book=$row[id_book]' class='btn btn-danger'>Delete</a></td>
                                                     </tr>
                                                     ";
                                                     }
                                                 } else {
-                                                    echo "<tr><td colspan='15'>0 results</td></tr>";
+                                                    echo "<tr><td colspan='6'>0 results</td></tr>";
                                                 }
                                                 ?>
                                             </tbody>
@@ -101,7 +75,7 @@ $result = mysqli_query($conn, $sql);
                                     <h4 class="title">Cari Kendaraan Tersedia</h4>
                                 </div>
                                 <div class="content">
-                                    <form method="post" action="transaksi.php#cari-kendaraan">
+                                    <form method="post" action="booked.php#cari-kendaraan">
                                         <input type="hidden" name="cari" value="yes">
                                         <div class="form-group col-lg-12">
                                             <label>Merk/Type</label>
@@ -158,7 +132,7 @@ $result = mysqli_query($conn, $sql);
                                                                 <td> $row[merk_type]</td>
                                                                 <td>Rp.  $row[harga_sewa]</td>
                                                                 <td> $row[tahun_keluaran]</td>
-                                                                <td><a href='transaksi.php?nomor_polisi=$row[nomor_polisi]&&tgl_keberangkatan=$tgl_keberangkatan&&tgl_kedatangan=$tgl_kedatangan#input-transaksi' class='btn btn-success'>Buat Surat Jalan</a></td>
+                                                                <td><a href='booked.php?nomor_polisi=$row[nomor_polisi]&&tgl_keberangkatan=$tgl_keberangkatan&&tgl_kedatangan=$tgl_kedatangan#input-booked' class='btn btn-success'>Booking</a></td>
                                                             </tr>
                                                              ";
                                                         }
@@ -181,7 +155,7 @@ $result = mysqli_query($conn, $sql);
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="header">
-                                    <h4 class="title" id="input-transaksi">Buat Surat Jalan</h4>
+                                    <h4 class="title" id="input-booked">Booking Kendaraan</h4>
                                 </div>
                                 <div class="content">
                                     <?php
@@ -194,47 +168,11 @@ $result = mysqli_query($conn, $sql);
                                         $tgl_kedatangan = $_GET['tgl_kedatangan'];
                                     }
                                     ?>
-                                    <form method="post" action="process.php?process=insert-transaksi">
-                                        <div class="row col-md-12">
-                                            <div class="form-group">
-                                                <label>No Surat Jalan</label>
-                                                <input type="text" name="no_surat_jalan" class="form-control" placeholder="No Surat Jalan" required>
-                                            </div>
+                                    <form method="post" action="process.php?process=insert-booked">
+                                    <div class="row col-md-12">
                                             <div class="form-group">
                                                 <label>Nomor Polisi</label>
                                                 <input type="text" name="nomor_polisi" class="form-control" placeholder="Nomor Polisi" readonly <?php echo "value='$nomor_polisi'"; ?>>
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Driver</label>
-                                                <input type="text" name="driver" class="form-control" placeholder="Driver">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>No/Golongan SIM</label>
-                                                <input type="text" name="no_golongan_sim" class="form-control" placeholder="No/Golongan SIM">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Penjemputan</label>
-                                                <input type="text" name="penjemputan" class="form-control" placeholder="Penjemputan">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Tanggal dibuat Surat Jalan</label>
-                                                <input type="date" name="tgl_dibuat_surat_jln" class="form-control" placeholder="Tanggal dibuat Surat Jalan">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Tempat dibuat Surat Jalan</label>
-                                                <input type="text" name="tmpt_dibuat_surat_jln" class="form-control" placeholder="Tempat dibuat Surat Jalan">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Penyewa</label>
-                                                <input type="text" name="penyewa" class="form-control" placeholder="Penyewa">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Telepon</label>
-                                                <input type="text" name="telepon" class="form-control" placeholder="Telepon">
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Tujuan</label>
-                                                <input type="text" name="tujuan" class="form-control" placeholder="Tujuan">
                                             </div>
                                             <div class="form-group">
                                                 <label>Tanggal Keberangkatan</label>
@@ -244,12 +182,8 @@ $result = mysqli_query($conn, $sql);
                                                 <label>Tanggal Kedatangan</label>
                                                 <input type="date" name="tgl_kedatangan" class="form-control" placeholder="Tanggal Kedatangan" readonly <?php echo "value='$tgl_kedatangan'"; ?>>
                                             </div>
-                                            <div class="form-group">
-                                                <label>Keterangan</label>
-                                                <input type="text" name="keterangan" class="form-control" placeholder="Keterangan" value="Belum Lunas" readonly>
-                                            </div>
                                         </div>
-                                        <input class="btn btn-primary" type="submit" value="Input Data">
+                                        <input class="btn btn-primary" type="submit" value="Booking">
                                     </form>
                                 </div>
                             </div>

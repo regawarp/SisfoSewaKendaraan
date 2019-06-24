@@ -38,6 +38,14 @@
                     <p>Kendaraan</p>
                 </a>
             </li>
+            <li <?php if ($page == "booked") {
+                    echo "class='active'";
+                } ?>>
+                <a href="booked.php">
+                    <i class="pe-7s-lock"></i>
+                    <p>Booking</p>
+                </a>
+            </li>
             <li <?php if ($page == "transaksi") {
                     echo "class='active'";
                 } ?>>

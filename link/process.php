@@ -317,6 +317,47 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
         mysqli_close($conn);
         break;
 
+    case 'insert-booked':
+        $nomor_polisi = mysqli_real_escape_string($conn, $_POST['nomor_polisi']);
+        $tgl_keberangkatan = mysqli_real_escape_string($conn, $_POST['tgl_keberangkatan']);
+        $tgl_kedatangan = mysqli_real_escape_string($conn, $_POST['tgl_kedatangan']);
+
+        $query = "INSERT INTO booked VALUES('','$nomor_polisi','$tgl_keberangkatan','$tgl_kedatangan')";
+        if (mysqli_query($conn, $query)) {
+            header("Location:booked.php?status=input-berhasil");
+        } else {
+            header("Location:booked.php?status=input-gagal");
+        }
+        mysqli_close($conn);
+        break;
+    case 'update-booked':
+        $id_book = mysqli_real_escape_string($conn, $_POST['id_book']);
+        $nomor_polisi = mysqli_real_escape_string($conn, $_POST['nomor_polisi']);
+        $tgl_keberangkatan = mysqli_real_escape_string($conn, $_POST['tgl_keberangkatan']);
+        $tgl_kedatangan = mysqli_real_escape_string($conn, $_POST['tgl_kedatangan']);
+
+        $query = "UPDATE booked SET nomor_polisi='$nomor_polisi',tgl_keberangkatan='$tgl_keberangkatan',tgl_kedatangan='$tgl_kedatangan' WHERE id_book='$id_book'";
+        if (mysqli_query($conn, $query)) {
+            header("Location:booked.php?status=update-berhasil");
+            // echo "BErhasil : $query";
+        } else {
+            header("Location:booked.php?status=update-gagal");
+            // echo "$query";
+        }
+        mysqli_close($conn);
+        break;
+    case 'delete-booked':
+        $id_book = mysqli_real_escape_string($conn, $_GET['id_book']);
+
+        $query = "DELETE FROM booked WHERE id_book='$id_book' ";
+        if (mysqli_query($conn, $query)) {
+            header("Location:booked.php?status=delete-berhasil");
+        } else {
+            header("Location:booked.php?status=delete-gagal");
+        }
+        mysqli_close($conn);
+        break;
+
     case 'export-laporan':
         switch ($_POST['jenis_laporan']) {
             case 'pendapatan':
