@@ -217,10 +217,15 @@ switch (mysqli_real_escape_string($conn, $_GET['process'])) {
         if (mysqli_num_rows($result) <= 0) {
             $queryTotal = "SELECT SUM(total_biaya) as 'total_biaya' FROM faktur WHERE no_surat_jalan='$no_surat_jalan'";
             $result = mysqli_query($conn, $queryTotal);
+        } else {
+            $totalBiayaSewa = 0;
         }
         $row = mysqli_fetch_assoc($result);
         $total_biaya = $row['total_biaya'] + $totalBiayaSewa;
         $sisa_pembayaran = $total_biaya - $uang_sejumlah;
+        if ($sisa_pembayaran < 0) {
+            $sisa_pembayaran = 0;
+        }
         $query = "INSERT INTO tanda_terima VALUES('$no_tanda_terima','$no_surat_jalan','$tanggal','$terbilang','$uang_sejumlah','$untuk_pembayaran','$sisa_pembayaran','$rincian_biaya')";
         if (mysqli_query($conn, $query)) {
             if ($sisa_pembayaran <= 0) {
